@@ -1,0 +1,9 @@
+#ifndef __WS2812B_H_
+#define __WS2812B_H_
+
+#include "led_strip.h"
+
+void init_led_strip();
+void set_flow_light(uint32_t r, uint32_t g, uint32_t b);
+
+#endif
