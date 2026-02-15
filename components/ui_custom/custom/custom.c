@@ -1,0 +1,474 @@
+/*
+* Copyright 2023 NXP
+* NXP Proprietary. This software is owned or controlled by NXP and may only be used strictly in
+* accordance with the applicable license terms. By expressly accepting such terms or by downloading, installing,
+* activating and/or otherwise using the software, you are agreeing that you have read, and that you agree to
+* comply with and are bound by, such license terms.  If you do not agree to be bound by the applicable license
+* terms, then you may not retain, install, activate or otherwise use the software.
+*/
+
+
+/*********************
+ *      INCLUDES
+ *********************/
+#include <stdio.h>
+#include "lvgl.h"
+#include "custom.h"
+#include "widgets_init.h"
+#include "buzzer.h"
+//#include "lv_port_indev.h"
+//lv group define
+lv_group_t *g = NULL;
+//todolist variables
+int8_t val = 1;
+int8_t val_cur = 1;
+int8_t done_array[9][4] = {0};
+int8_t done_sum = 0;
+int8_t todo_sum = 0;
+bool todo_back_label = 0;
+bool main_load_label = 0;
+//timer variables
+int16_t timer_all_num = 25; //minutes
+uint32_t timer_all_seconds = 0;
+lv_timer_t *pomodoro_timer = NULL;
+bool pomodoro_countdown = 0;
+bool pomodoro_stopwatch = 0;
+bool countdown_start_label = 0;
+bool countdown_process_label = 0;
+bool stopwatch_start_label = 0;
+bool stopwatch_process_label = 0;
+//timing variables
+bool task_real_time_en = 0;
+bool timing_back_en = 0;
+int16_t timing_year = 0;
+int16_t timing_month = 0;
+int16_t timing_day = 0;
+int16_t timing_weekday = 0;
+//wificfg variable
+bool keyboard_start_en = 0;
+bool wifi_scan_en = 0;
+bool wifi_disconnect_en = 0;
+bool wifi_connect_en = 0;
+bool wifi_load_en = 0;
+bool wifi_success = 0;
+char *wifi_ssid = NULL;
+//wordmenu variables
+wordbook_info_t book_info[3] = {
+    [0] = {
+        .word_index = 0,
+        .word_review_num = 0,
+        .review_absoulte_index = {0},
+        .word_learned_num = 0,   
+        .word_total_num = 50,
+        .book_name = "CET4",
+        .word_state = {0}
+    },
+    [1] = {
+        .word_index = 0,
+        .word_review_num = 0,
+        .review_absoulte_index = {0},
+        .word_learned_num = 0,   
+        .word_total_num = 50,
+        .book_name = "IELTS",
+        .word_state = {0}  
+    },
+    [2] = {
+        .word_index = 0,
+        .word_review_num = 0,
+        .review_absoulte_index = {0},
+        .word_learned_num = 0,   
+        .word_total_num = 50,
+        .book_name = "TOEFL",
+        .word_state = {0}       
+    },   
+};
+//wordcard variables
+bool wordcard_change = 0;
+bool reviewcard_change = 0;
+int8_t wordbook_index = 0;
+int review_index = 0;
+
+//change screen delay time
+#define DELAY_MS         1500          // stay how long for change screen
+
+static lv_timer_t *delay_timer = NULL;
+
+/* 时间到，切屏 + 清定时器 */
+static void delay_timer_cb(lv_timer_t *t)
+{
+    lv_timer_del(t);                                    // 一次性，用完即删
+    delay_timer = NULL;
+    setup_scr_screen_log(&guider_ui);
+    lv_scr_load_anim(guider_ui.screen_log,                     // 目标屏幕
+                     LV_SCR_LOAD_ANIM_FADE_ON,          // 动画
+                     300, 0, true);                     // 300 ms 淡入
+}
+/* 屏幕 Loaded 事件回调：启动一次性定时器 */
+static void on_screen_loaded(lv_event_t *e)
+{
+    (void)e;                                            // 未用
+    if(delay_timer) return;                             // 防止重复
+    delay_timer = lv_timer_create(delay_timer_cb, DELAY_MS, NULL);
+    lv_timer_set_repeat_count(delay_timer, 1);          // 只触发一次
+}
+
+//reppo delay x ms trans to log screen
+void screen_reppo_custom_init(){
+    lv_obj_add_event_cb(guider_ui.screen_reppo,  on_screen_loaded, LV_EVENT_SCREEN_LOADED, NULL);
+}
+
+// ----------------my_kb_event_cb------------------------------//
+void my_kb_event_cb(lv_event_t * e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t * kb = lv_event_get_target(e);
+    lv_group_t * g = lv_group_get_default();
+    if(code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
+        lv_group_set_editing(g, false);
+        lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
+        lv_group_focus_obj(guider_ui.screen_wificfg_btn_connect);
+        lv_obj_remove_event_cb(kb, my_kb_event_cb);
+        keyboard_start_en = 0;
+    }
+}
+//-----------------------pomodoro timer------------------------//
+//-------------------------------------------------------------//
+static void countdown_cb(lv_timer_t *t){
+    if(timer_all_seconds == 0){
+        lv_timer_del(t);
+        t = NULL;
+        lv_label_set_text(guider_ui.screen_pomodoro_label_timer,"00:00:00");
+        countdown_start_label = 0;
+        buzzer_timeout();
+        return;
+    }
+    timer_all_seconds -= 1;
+    int hours = timer_all_seconds / 3600;
+    int minutes = (timer_all_seconds % 3600) / 60;
+    int seconds = timer_all_seconds % 60;
+    lv_label_set_text_fmt(guider_ui.screen_pomodoro_label_timer,"%02d:%02d:%02d",hours,minutes,seconds);
+}
+
+void countdown_start(int16_t minutes){
+    timer_all_seconds = minutes * 60;
+    pomodoro_timer = lv_timer_create(countdown_cb,1000,NULL);
+}
+//-----------------------pomodoro stopwatch------------------------//
+//-----------------------------------------------------------------//
+static void stopwatch_cb(lv_timer_t *t){
+    timer_all_seconds += 1;
+    int hours = timer_all_seconds / 3600;
+    int minutes = (timer_all_seconds % 3600) / 60;
+    int seconds = timer_all_seconds % 60;
+    lv_label_set_text_fmt(guider_ui.screen_pomodoro_label_timer,"%02d:%02d:%02d",hours,minutes,seconds);
+}
+
+void stopwatch_start(){
+    timer_all_seconds = 0;
+    pomodoro_timer = lv_timer_create(stopwatch_cb,1000,NULL);
+}
+
+//-----------------------wifi_status show----------------------//
+void wifi_connect_show(){
+
+    lv_obj_add_flag(guider_ui.screen_wificfg_spinner_connect,LV_OBJ_FLAG_HIDDEN);
+    // 1. Hide components (Add HIDDEN flag)
+    lv_obj_add_flag(guider_ui.screen_wificfg_img_passicon, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_ta_password, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_btn_connect, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_btn_cancel, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_img_wififalse, LV_OBJ_FLAG_HIDDEN);
+
+    // 2. Show components (Clear HIDDEN flag)
+    lv_obj_clear_flag(guider_ui.screen_wificfg_img_wifiicon, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(guider_ui.screen_wificfg_label_status2, LV_OBJ_FLAG_HIDDEN);
+
+    // 3. Update Label Texts
+    lv_label_set_text(guider_ui.screen_wificfg_label_status, "Connection Status");
+    lv_label_set_text(guider_ui.screen_wificfg_label_status2, "Connected");
+
+    // 4. Update Label Color (Status2)
+    // Assuming the light green color in the image is roughly #b7f0b8
+    lv_obj_set_style_text_color(guider_ui.screen_wificfg_label_status2, lv_color_hex(0xB7F0B8), 0);
+
+    // 5. Change Image Height
+    ui_animation(guider_ui.screen_wificfg_img_statusbg, 200, 0, lv_obj_get_height(guider_ui.screen_wificfg_img_statusbg), 125, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL); 
+}
+
+void wifi_disconnect_show(){
+    lv_obj_add_flag(guider_ui.screen_wificfg_spinner_connect,LV_OBJ_FLAG_HIDDEN);
+    // 1. Hide components (Add HIDDEN flag)
+    lv_obj_add_flag(guider_ui.screen_wificfg_img_passicon, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_ta_password, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_btn_connect, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_btn_cancel, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.screen_wificfg_img_wififalse, LV_OBJ_FLAG_HIDDEN);
+
+    // 2. Show components (Clear HIDDEN flag)
+    lv_obj_clear_flag(guider_ui.screen_wificfg_img_wifiicon, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(guider_ui.screen_wificfg_label_status2, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(guider_ui.screen_wificfg_img_wififalse, LV_OBJ_FLAG_HIDDEN);
+
+    // 3. Update Label Texts
+    lv_label_set_text(guider_ui.screen_wificfg_label_status, "Connection Status");
+    lv_label_set_text(guider_ui.screen_wificfg_label_status2, "Disconnected");
+
+    // 4. Update Label Color (Status2)
+    // Assuming the light green color in the image is roughly #b7f0b8
+    lv_obj_set_style_text_color(guider_ui.screen_wificfg_label_status2, lv_color_hex(0xFACBD3), 0);
+
+    // 5. Change Image Height
+    ui_animation(guider_ui.screen_wificfg_img_statusbg, 200, 0, lv_obj_get_height(guider_ui.screen_wificfg_img_statusbg), 125, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+}
+//-----------------button added -------------------------------//
+//-------------------------------------------------------------//
+//buttion add function screen_todolist
+//buttion add function screen_todolist
+void screen_todolist_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_todo1);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_todo2);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_todo3);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_todo4);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_delpage);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_pageminus);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_pageplus);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_addpage);
+    lv_group_add_obj(g, guider_ui.screen_todolist_btn_back);
+    
+}
+//buttion add function screen_log
+void screen_log_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_log_reppo_logo);
+}
+
+//buttion add function screen_main
+void screen_main_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_main_btn_todolist);  
+    lv_group_add_obj(g, guider_ui.screen_main_btn_word);
+    lv_group_add_obj(g, guider_ui.screen_main_btn_timer); 
+    lv_group_add_obj(g, guider_ui.screen_main_btn_setting);
+    lv_group_add_obj(g, guider_ui.screen_main_btn_plane); 
+}
+//buttion add function screen_pomodoro
+void screen_timing_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_timing_btn_back);
+    lv_group_add_obj(g, guider_ui.screen_timing_btn_pomodoro);  
+
+}
+
+//buttion add function screen_pomodoro
+void screen_pomodoro_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_home); 
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_stopwatch); 
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_countdown);
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_minus);
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_addnum);
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_plus);
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_start);
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_reset);
+    lv_group_add_obj(g, guider_ui.screen_pomodoro_btn_back);  
+
+}
+//buttion add function screen_wordmeun
+void screen_wordmenu_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+     
+    lv_group_add_obj(g, guider_ui.screen_wordmeun_btn_bookleft); 
+    lv_group_add_obj(g, guider_ui.screen_wordmeun_btn_bookright); 
+    lv_group_add_obj(g, guider_ui.screen_wordmeun_btn_learn); 
+    lv_group_add_obj(g, guider_ui.screen_wordmeun_btn_review); 
+    lv_group_add_obj(g, guider_ui.screen_wordmeun_btn_back); 
+}
+
+//buttion add function screen_wordcard
+void screen_wordcard_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_wordcard_btn_home);  
+    lv_group_add_obj(g, guider_ui.screen_wordcard_btn_left);
+    lv_group_add_obj(g, guider_ui.screen_wordcard_btn_right);    
+    lv_group_add_obj(g, guider_ui.screen_wordcard_btn_dui);  
+    lv_group_add_obj(g, guider_ui.screen_wordcard_btn_cuo);  
+    lv_group_add_obj(g, guider_ui.screen_wordcard_btn_back);
+}
+
+//buttion add function screen_reviewcard
+void screen_reviewcard_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_reviewcard_btn_home);  
+    lv_group_add_obj(g, guider_ui.screen_reviewcard_btn_left);
+    lv_group_add_obj(g, guider_ui.screen_reviewcard_btn_right);    
+    lv_group_add_obj(g, guider_ui.screen_reviewcard_btn_dui);  
+    lv_group_add_obj(g, guider_ui.screen_reviewcard_btn_cuo);  
+    lv_group_add_obj(g, guider_ui.screen_reviewcard_btn_back); 
+}
+
+//buttion add function screen_setting
+void screen_setting_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_wifi);  
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_vocab);
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_laba);  
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_timer);
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_ble);
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_general);
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_data);
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_todo);
+    lv_group_add_obj(g, guider_ui.screen_setting_btn_back);  
+}
+
+//buttion add function screen_wificfg
+void screen_wificfg_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_wificfg_list_1_item0);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_list_1_item1);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_list_1_item2);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_list_1_item3);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_list_1_item4);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_btn_scan);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_btn_disconnect);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_ta_password); 
+    lv_group_add_obj(g, guider_ui.screen_wificfg_btn_cancel);  
+    lv_group_add_obj(g, guider_ui.screen_wificfg_btn_connect); 
+    lv_group_add_obj(g, guider_ui.screen_wificfg_btn_back);  
+}
+void custom_init(lv_ui *ui)
+{
+
+}
+

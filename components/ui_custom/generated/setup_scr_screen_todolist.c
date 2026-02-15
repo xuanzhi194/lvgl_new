@@ -1,0 +1,690 @@
+/*
+* Copyright 2026 NXP
+* NXP Proprietary. This software is owned or controlled by NXP and may only be used strictly in
+* accordance with the applicable license terms. By expressly accepting such terms or by downloading, installing,
+* activating and/or otherwise using the software, you are agreeing that you have read, and that you agree to
+* comply with and are bound by, such license terms.  If you do not agree to be bound by the applicable license
+* terms, then you may not retain, install, activate or otherwise use the software.
+*/
+
+#include "lvgl.h"
+#include <stdio.h>
+#include "gui_guider.h"
+#include "events_init.h"
+#include "widgets_init.h"
+#include "custom.h"
+
+
+
+void setup_scr_screen_todolist(lv_ui *ui)
+{
+    //Write codes screen_todolist
+    ui->screen_todolist = lv_obj_create(NULL);
+    lv_obj_set_size(ui->screen_todolist, 320, 170);
+    lv_obj_set_scrollbar_mode(ui->screen_todolist, LV_SCROLLBAR_MODE_OFF);
+
+    //Write style for screen_todolist, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui->screen_todolist, &_screen_todolist_bg_320x170, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_opa(ui->screen_todolist, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_todolist, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_btn_back
+    ui->screen_todolist_btn_back = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_back_label = lv_label_create(ui->screen_todolist_btn_back);
+    lv_label_set_text(ui->screen_todolist_btn_back_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_back_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_back_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_back, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_back_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_back, 292, 5);
+    lv_obj_set_size(ui->screen_todolist_btn_back, 20, 20);
+
+    //Write style for screen_todolist_btn_back, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_back, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui->screen_todolist_btn_back, &_home_20x20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_opa(ui->screen_todolist_btn_back, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_back, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_back, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_back, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_back, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_back, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_back, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_back, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_back, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_back, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_back, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_src(ui->screen_todolist_btn_back, &_home_20x20, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_opa(ui->screen_todolist_btn_back, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_todolist_btn_back, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_back, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_back, &lv_font_montserratMedium_20, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_back, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_img_addpage
+    ui->screen_todolist_img_addpage = lv_img_create(ui->screen_todolist);
+    lv_obj_add_flag(ui->screen_todolist_img_addpage, LV_OBJ_FLAG_CLICKABLE);
+    lv_img_set_src(ui->screen_todolist_img_addpage, &_group_add5_alpha_98x20);
+    lv_img_set_pivot(ui->screen_todolist_img_addpage, 50,50);
+    lv_img_set_angle(ui->screen_todolist_img_addpage, 0);
+    lv_obj_set_pos(ui->screen_todolist_img_addpage, 10, 146);
+    lv_obj_set_size(ui->screen_todolist_img_addpage, 98, 20);
+
+    //Write style for screen_todolist_img_addpage, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_img_recolor_opa(ui->screen_todolist_img_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_img_opa(ui->screen_todolist_img_addpage, 177, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_img_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_clip_corner(ui->screen_todolist_img_addpage, true, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_addpage
+    ui->screen_todolist_label_addpage = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_addpage, "Del Page -");
+    lv_label_set_long_mode(ui->screen_todolist_label_addpage, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_addpage, 18, 150);
+    lv_obj_set_size(ui->screen_todolist_label_addpage, 86, 14);
+
+    //Write style for screen_todolist_label_addpage, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_addpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_addpage, &lv_font_arial_12, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_addpage, 172, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_addpage, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_btn_delpage
+    ui->screen_todolist_btn_delpage = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_delpage_label = lv_label_create(ui->screen_todolist_btn_delpage);
+    lv_label_set_text(ui->screen_todolist_btn_delpage_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_delpage_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_delpage_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_delpage, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_delpage_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_delpage, 12, 149);
+    lv_obj_set_size(ui->screen_todolist_btn_delpage, 93, 15);
+
+    //Write style for screen_todolist_btn_delpage, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_delpage, 10, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_delpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_delpage, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_delpage, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_delpage, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_delpage, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_delpage, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_delpage, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_delpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_delpage, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_delpage, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_delpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_delpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_delpage, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_delpage, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_btn_todo1
+    ui->screen_todolist_btn_todo1 = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_todo1_label = lv_label_create(ui->screen_todolist_btn_todo1);
+    lv_label_set_text(ui->screen_todolist_btn_todo1_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_todo1_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_todo1_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo1, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_todo1_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_todo1, 13, 38);
+    lv_obj_set_size(ui->screen_todolist_btn_todo1, 145, 45);
+
+    //Write style for screen_todolist_btn_todo1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo1, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo1, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_todo1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_todo1, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo1, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo1, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_todo1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_todo1, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_todo1, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_todo1, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo1, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo1, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_btn_todo2
+    ui->screen_todolist_btn_todo2 = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_todo2_label = lv_label_create(ui->screen_todolist_btn_todo2);
+    lv_label_set_text(ui->screen_todolist_btn_todo2_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_todo2_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_todo2_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo2, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_todo2_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_todo2, 168, 37);
+    lv_obj_set_size(ui->screen_todolist_btn_todo2, 144, 45);
+
+    //Write style for screen_todolist_btn_todo2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo2, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo2, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_todo2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_todo2, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo2, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo2, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_todo2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_todo2, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_todo2, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_todo2, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo2, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo2, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_btn_todo3
+    ui->screen_todolist_btn_todo3 = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_todo3_label = lv_label_create(ui->screen_todolist_btn_todo3);
+    lv_label_set_text(ui->screen_todolist_btn_todo3_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_todo3_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_todo3_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo3, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_todo3_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_todo3, 13, 91);
+    lv_obj_set_size(ui->screen_todolist_btn_todo3, 145, 46);
+
+    //Write style for screen_todolist_btn_todo3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo3, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo3, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_todo3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_todo3, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo3, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo3, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_todo3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_todo3, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_todo3, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_todo3, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo3, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo3, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_btn_todo4
+    ui->screen_todolist_btn_todo4 = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_todo4_label = lv_label_create(ui->screen_todolist_btn_todo4);
+    lv_label_set_text(ui->screen_todolist_btn_todo4_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_todo4_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_todo4_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo4, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_todo4_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_todo4, 168, 92);
+    lv_obj_set_size(ui->screen_todolist_btn_todo4, 145, 44);
+
+    //Write style for screen_todolist_btn_todo4, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo4, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo4, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo4, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo4, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_todo4, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_todo4, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_todo4, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_todo4, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_todo4, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_todo4, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_todo4, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_todo4, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_todo4, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_todo4, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_todo4, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_img_delpage
+    ui->screen_todolist_img_delpage = lv_img_create(ui->screen_todolist);
+    lv_obj_add_flag(ui->screen_todolist_img_delpage, LV_OBJ_FLAG_CLICKABLE);
+    lv_img_set_src(ui->screen_todolist_img_delpage, &_group_add5_alpha_98x20);
+    lv_img_set_pivot(ui->screen_todolist_img_delpage, 50,50);
+    lv_img_set_angle(ui->screen_todolist_img_delpage, 0);
+    lv_obj_set_pos(ui->screen_todolist_img_delpage, 215, 146);
+    lv_obj_set_size(ui->screen_todolist_img_delpage, 98, 20);
+
+    //Write style for screen_todolist_img_delpage, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_img_recolor_opa(ui->screen_todolist_img_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_img_opa(ui->screen_todolist_img_delpage, 177, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_img_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_clip_corner(ui->screen_todolist_img_delpage, true, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_delpage
+    ui->screen_todolist_label_delpage = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_delpage, "Add Page +");
+    lv_label_set_long_mode(ui->screen_todolist_label_delpage, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_delpage, 231, 149);
+    lv_obj_set_size(ui->screen_todolist_label_delpage, 65, 12);
+
+    //Write style for screen_todolist_label_delpage, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_delpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_delpage, &lv_font_arial_12, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_delpage, 169, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_delpage, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_delpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_btn_addpage
+    ui->screen_todolist_btn_addpage = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_addpage_label = lv_label_create(ui->screen_todolist_btn_addpage);
+    lv_label_set_text(ui->screen_todolist_btn_addpage_label, "");
+    lv_label_set_long_mode(ui->screen_todolist_btn_addpage_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_addpage_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_addpage, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_addpage_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_addpage, 218, 149);
+    lv_obj_set_size(ui->screen_todolist_btn_addpage, 91, 14);
+
+    //Write style for screen_todolist_btn_addpage, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_addpage, 10, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_addpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_addpage, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_addpage, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_addpage, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_addpage, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_addpage, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_addpage, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_addpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_addpage, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_addpage, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_addpage, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_addpage, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_addpage, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_addpage, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_label_indexcut
+    ui->screen_todolist_label_indexcut = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_indexcut, "/");
+    lv_label_set_long_mode(ui->screen_todolist_label_indexcut, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_indexcut, 155, 150);
+    lv_obj_set_size(ui->screen_todolist_label_indexcut, 17, 14);
+
+    //Write style for screen_todolist_label_indexcut, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_indexcut, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_indexcut, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_indexcut, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_indexcut, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_indexcut, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_btn_pageminus
+    ui->screen_todolist_btn_pageminus = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_pageminus_label = lv_label_create(ui->screen_todolist_btn_pageminus);
+    lv_label_set_text(ui->screen_todolist_btn_pageminus_label, "<<");
+    lv_label_set_long_mode(ui->screen_todolist_btn_pageminus_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_pageminus_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_pageminus, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_pageminus_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_pageminus, 113, 146);
+    lv_obj_set_size(ui->screen_todolist_btn_pageminus, 25, 20);
+
+    //Write style for screen_todolist_btn_pageminus, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_pageminus, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_pageminus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_pageminus, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_pageminus, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_pageminus, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_pageminus, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_pageminus, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_pageminus, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_pageminus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_pageminus, 128, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_pageminus, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_pageminus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_pageminus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_pageminus, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_pageminus, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_btn_pageplus
+    ui->screen_todolist_btn_pageplus = lv_btn_create(ui->screen_todolist);
+    ui->screen_todolist_btn_pageplus_label = lv_label_create(ui->screen_todolist_btn_pageplus);
+    lv_label_set_text(ui->screen_todolist_btn_pageplus_label, ">>");
+    lv_label_set_long_mode(ui->screen_todolist_btn_pageplus_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_todolist_btn_pageplus_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_todolist_btn_pageplus, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_todolist_btn_pageplus_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_todolist_btn_pageplus, 188, 146);
+    lv_obj_set_size(ui->screen_todolist_btn_pageplus, 25, 20);
+
+    //Write style for screen_todolist_btn_pageplus, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_pageplus, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_pageplus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_pageplus, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_pageplus, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_btn_pageplus, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_todolist_btn_pageplus, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_todolist_btn_pageplus, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_btn_pageplus, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_todolist_btn_pageplus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_todolist_btn_pageplus, 128, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_todolist_btn_pageplus, 2, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_todolist_btn_pageplus, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_todolist_btn_pageplus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_todolist_btn_pageplus, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_todolist_btn_pageplus, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_todolist_label_indexcur
+    ui->screen_todolist_label_indexcur = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_indexcur, "1");
+    lv_label_set_long_mode(ui->screen_todolist_label_indexcur, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_indexcur, 138, 150);
+    lv_obj_set_size(ui->screen_todolist_label_indexcur, 20, 14);
+
+    //Write style for screen_todolist_label_indexcur, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_indexcur, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_indexcur, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_indexcur, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_indexcur, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_indexcur, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_indexall
+    ui->screen_todolist_label_indexall = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_indexall, "1");
+    lv_label_set_long_mode(ui->screen_todolist_label_indexall, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_indexall, 168, 150);
+    lv_obj_set_size(ui->screen_todolist_label_indexall, 20, 15);
+
+    //Write style for screen_todolist_label_indexall, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_indexall, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_indexall, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_indexall, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_indexall, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_indexall, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_done
+    ui->screen_todolist_label_done = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_done, "Done");
+    lv_label_set_long_mode(ui->screen_todolist_label_done, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_done, 10, 5);
+    lv_obj_set_size(ui->screen_todolist_label_done, 40, 15);
+
+    //Write style for screen_todolist_label_done, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_done, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_done, &lv_font_Acme_Regular_12, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_done, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_done, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_done, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_todo
+    ui->screen_todolist_label_todo = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_todo, "ToDo");
+    lv_label_set_long_mode(ui->screen_todolist_label_todo, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_todo, 10, 20);
+    lv_obj_set_size(ui->screen_todolist_label_todo, 40, 15);
+
+    //Write style for screen_todolist_label_todo, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_todo, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_todo, &lv_font_Acme_Regular_12, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_todo, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_todo, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_todo, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_donenum
+    ui->screen_todolist_label_donenum = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_donenum, "0");
+    lv_label_set_long_mode(ui->screen_todolist_label_donenum, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_donenum, 50, 5);
+    lv_obj_set_size(ui->screen_todolist_label_donenum, 15, 15);
+
+    //Write style for screen_todolist_label_donenum, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_donenum, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_donenum, &lv_font_Acme_Regular_14, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_donenum, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_donenum, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_donenum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_todonum
+    ui->screen_todolist_label_todonum = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_todonum, "0");
+    lv_label_set_long_mode(ui->screen_todolist_label_todonum, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(ui->screen_todolist_label_todonum, 50, 20);
+    lv_obj_set_size(ui->screen_todolist_label_todonum, 15, 15);
+
+    //Write style for screen_todolist_label_todonum, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_todonum, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_todonum, &lv_font_Acme_Regular_14, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_todonum, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_todonum, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_todonum, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_todo1
+    ui->screen_todolist_label_todo1 = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_todo1, "TO DO 1: 英语学习一个小时");
+    lv_label_set_long_mode(ui->screen_todolist_label_todo1, LV_LABEL_LONG_CLIP);
+    lv_obj_set_pos(ui->screen_todolist_label_todo1, 17, 50);
+    lv_obj_set_size(ui->screen_todolist_label_todo1, 135, 15);
+
+    //Write style for screen_todolist_label_todo1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_todo1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_todo1, &lv_font_AdobeFangsongStdRegular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_todo1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_todo1, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_todo1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_todo2
+    ui->screen_todolist_label_todo2 = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_todo2, "TO DO 2: 编程任务一个小时");
+    lv_label_set_long_mode(ui->screen_todolist_label_todo2, LV_LABEL_LONG_CLIP);
+    lv_obj_set_pos(ui->screen_todolist_label_todo2, 173, 50);
+    lv_obj_set_size(ui->screen_todolist_label_todo2, 135, 15);
+
+    //Write style for screen_todolist_label_todo2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_todo2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_todo2, &lv_font_AdobeFangsongStdRegular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_todo2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_todo2, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_todo2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_todo3
+    ui->screen_todolist_label_todo3 = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_todo3, "TO DO 3: 语文学习一个小时");
+    lv_label_set_long_mode(ui->screen_todolist_label_todo3, LV_LABEL_LONG_CLIP);
+    lv_obj_set_pos(ui->screen_todolist_label_todo3, 18, 107);
+    lv_obj_set_size(ui->screen_todolist_label_todo3, 135, 15);
+
+    //Write style for screen_todolist_label_todo3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_todo3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_todo3, &lv_font_AdobeFangsongStdRegular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_todo3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_todo3, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_todo3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes screen_todolist_label_todo4
+    ui->screen_todolist_label_todo4 = lv_label_create(ui->screen_todolist);
+    lv_label_set_text(ui->screen_todolist_label_todo4, "TO DO 4: 英语单词背诵20个");
+    lv_label_set_long_mode(ui->screen_todolist_label_todo4, LV_LABEL_LONG_CLIP);
+    lv_obj_set_pos(ui->screen_todolist_label_todo4, 173, 107);
+    lv_obj_set_size(ui->screen_todolist_label_todo4, 135, 15);
+
+    //Write style for screen_todolist_label_todo4, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_border_width(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_todolist_label_todo4, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_todolist_label_todo4, &lv_font_AdobeFangsongStdRegular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_todolist_label_todo4, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_todolist_label_todo4, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_todolist_label_todo4, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //The custom code of screen_todolist.
+
+
+    //Update current screen layout.
+    lv_obj_update_layout(ui->screen_todolist);
+
+    //Init events for screen.
+    events_init_screen_todolist(ui);
+}

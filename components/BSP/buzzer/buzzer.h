@@ -1,0 +1,30 @@
+#ifndef __BUZZER_H_
+#define __BUZZER_H_
+
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_wifi.h"
+#include "esp_event.h"
+#include "nvs_flash.h"
+#include "esp_netif.h"    
+#include "esp_err.h"
+#include "esp_sntp.h"
+#include "esp_log.h"
+#include "driver/ledc.h"
+
+// 定义配置参数
+#define BUZZER_IO           (7)               // 使用 IO7
+#define BUZZER_LEDC_TIMER   LEDC_TIMER_0
+#define BUZZER_LEDC_MODE    LEDC_LOW_SPEED_MODE
+#define BUZZER_LEDC_CHANNEL LEDC_CHANNEL_0
+#define BUZZER_DUTY_RES     LEDC_TIMER_13_BIT // 13位分辨率
+#define BUZZER_INITIAL_FREQ (2000)            // 初始频率 2kHz
+
+/**
+ * 初始化 PWM 配置
+ */
+void buzzer_init();
+void buzzer_set_sound(uint32_t freq, uint8_t volume_percent);
+void buzzer_timeout();
+#endif

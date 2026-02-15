@@ -1,0 +1,87 @@
+/*
+* Copyright 2023 NXP
+* NXP Proprietary. This software is owned or controlled by NXP and may only be used strictly in
+* accordance with the applicable license terms. By expressly accepting such terms or by downloading, installing,
+* activating and/or otherwise using the software, you are agreeing that you have read, and that you agree to
+* comply with and are bound by, such license terms.  If you do not agree to be bound by the applicable license
+* terms, then you may not retain, install, activate or otherwise use the software.
+*/
+
+#ifndef __CUSTOM_H_
+#define __CUSTOM_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "gui_guider.h"
+
+//struct indicate
+typedef struct {
+    int word_index;
+    uint16_t review_absoulte_index[100]; // this index is to count word_index for review word
+    int word_review_num;    
+    int word_learned_num;   
+    int word_total_num;     
+    char book_name[32];  
+    uint8_t word_state[100]; //0 -> not learn or review 1 -> learned 2 -> review
+} wordbook_info_t;
+
+// variables indicate
+extern int8_t val;
+extern int8_t val_cur;
+extern int8_t done_array[9][4];
+extern bool todo_back_label;
+extern bool main_load_label;
+extern int8_t done_sum;
+extern int8_t todo_sum;
+extern int16_t timer_all_num ;
+extern uint32_t timer_all_seconds;
+extern lv_timer_t *pomodoro_timer;
+extern bool pomodoro_countdown;
+extern bool pomodoro_stopwatch;
+extern bool countdown_start_label;
+extern bool countdown_process_label;
+extern bool stopwatch_start_label;
+extern bool stopwatch_process_label;
+extern bool task_real_time_en;
+extern bool timing_back_en;
+extern int16_t timing_year;
+extern int16_t timing_month;
+extern int16_t timing_day;
+extern int16_t timing_weekday;
+extern wordbook_info_t book_info[3];
+extern bool wordcard_change;
+extern bool reviewcard_change;
+extern int8_t wordbook_index;
+extern int review_index;
+extern bool keyboard_start_en;
+extern bool wifi_scan_en;
+extern bool wifi_disconnect_en;
+extern bool wifi_connect_en;
+extern bool wifi_load_en;
+extern bool wifi_success;
+extern char *wifi_ssid;
+// func indicate
+void custom_init(lv_ui *ui);
+void screen_reppo_custom_init();
+void countdown_start(int16_t minutes);
+void stopwatch_start();
+extern void wifi_connect_show();
+extern void wifi_disconnect_show();
+//screens buttion add
+extern lv_group_t *g;
+void screen_todolist_buttion_add();
+void screen_main_buttion_add();
+void screen_log_buttion_add();
+void screen_timing_buttion_add();
+void screen_pomodoro_buttion_add();
+void screen_wordcard_buttion_add();
+void screen_wordmenu_buttion_add();
+void screen_reviewcard_buttion_add();
+void screen_setting_buttion_add();
+void screen_wificfg_buttion_add();
+void my_kb_event_cb(lv_event_t * e);
+#ifdef __cplusplus
+}
+#endif
+#endif /* EVENT_CB_H_ */
