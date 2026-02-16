@@ -1,4 +1,4 @@
-#include "ec06.h"
+﻿#include "ec06.h"
 #include "esp_log.h"
 #include <stdlib.h>
 
@@ -23,7 +23,6 @@ void init_encoder_direction() {
     ESP_ERROR_CHECK(pcnt_new_unit(&unit_config, &pcnt_unit));
 
     // 2. Set glitch filter (recommended to set larger, e.g., 1000~10000ns)
-
     pcnt_glitch_filter_config_t filter_config = {
         .max_glitch_ns = 10000, 
     };
@@ -37,7 +36,6 @@ void init_encoder_direction() {
     pcnt_chan_config_t chan_a_config = {
         .edge_gpio_num = ENCODER_A_GPIO, // A is the edge source
         .level_gpio_num = ENCODER_B_GPIO, // B is the level source
-
     };
     pcnt_channel_handle_t pcnt_chan_a = NULL;
     ESP_ERROR_CHECK(pcnt_new_channel(pcnt_unit, &chan_a_config, &pcnt_chan_a));
