@@ -35,21 +35,29 @@ void battery_adc_init(void) {
 }
 
 int get_battery_percentage(void) {
-    int adc_raw, voltage_mv;
-    adc_oneshot_read(adc1_handle, BAT_ADC_CHAN, &adc_raw);
-    
+    // Multi-sample averaging: read 16 times to reduce ADC noise
+    #define BAT_SAMPLE_COUNT 16
+    int32_t adc_sum = 0;
+    int adc_raw;
+    for (int i = 0; i < BAT_SAMPLE_COUNT; i++) {
+        adc_oneshot_read(adc1_handle, BAT_ADC_CHAN, &adc_raw);
+        adc_sum += adc_raw;
+    }
+    int adc_avg = (int)(adc_sum / BAT_SAMPLE_COUNT);
+
+    int voltage_mv;
     if (adc1_cali_handle) {
-        adc_cali_raw_to_voltage(adc1_cali_handle, adc_raw, &voltage_mv);
+        adc_cali_raw_to_voltage(adc1_cali_handle, adc_avg, &voltage_mv);
     } else {
-        // 无校准时的近似计算 (12bit, 12dB 约 3100mV 满量程)
-        voltage_mv = adc_raw * 3100 / 4095; 
+        // Approximate when no calibration (12bit, 12dB ~3100mV full scale)
+        voltage_mv = adc_avg * 3100 / 4095;
     }
 
     int battery_voltage = voltage_mv * VOLTAGE_DIVIDER_RATIO;
     int percentage = (battery_voltage - BAT_MIN_VOLT) * 100 / (BAT_MAX_VOLT - BAT_MIN_VOLT);
 
-    // if (percentage >= 97) percentage = 100;
-    if (percentage < 0) percentage = 0;
+    if (percentage > 100) percentage = 100;
+    if (percentage < 0)   percentage = 0;
 
     return percentage;
 }

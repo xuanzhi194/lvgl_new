@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
+#include <string.h>
 #include "driver/gpio.h"
 #include "lcd.h"
 #include "lvgl.h"
@@ -34,15 +36,15 @@ const char *week_days[7] = {
     "Saturday"  // 6
 };
 lv_ui guider_ui;
-bool screen_main_en = 0;
 lv_timer_t * bat_timer = NULL;
+SemaphoreHandle_t lvgl_mutex = NULL;  // Protects all LVGL API calls across threads
 bool init_ntp = 0;
+
 //------------lvgl timer to battery show----------//
 void my_battery_update_cb(lv_timer_t * timer) {
-    // detect screen_main
     if (lv_scr_act() != guider_ui.screen_main) return;
     lv_obj_t * label = guider_ui.screen_main_label_battery;
-    if(lv_obj_is_valid(label)) {
+    if(label != NULL && lv_obj_is_valid(label)) {
         int bat = get_battery_percentage();
         lv_label_set_text_fmt(label, "%d%%", bat);
     }
@@ -77,18 +79,24 @@ void nvs_thread(void *param){
             set_flow_light(80, 32, 33);
         }else if(wordcard_change){
             get_word_from_csv(book_info[wordbook_index].word_index, &current_word,book_info[wordbook_index].book_name);
-            lv_label_set_text(guider_ui.screen_wordcard_label_spelling,current_word.word);
-            lv_obj_set_style_text_font(guider_ui.screen_wordcard_label_phonetic, &lv_font_arial_14, 0);
-            lv_label_set_text(guider_ui.screen_wordcard_label_phonetic,current_word.phonetic);
-            lv_label_set_text(guider_ui.screen_wordcard_label_meaning,current_word.definition);
+            if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(50)) == pdTRUE){
+                lv_label_set_text(guider_ui.screen_wordcard_label_spelling,current_word.word);
+                lv_obj_set_style_text_font(guider_ui.screen_wordcard_label_phonetic, &lv_font_arial_14, 0);
+                lv_label_set_text(guider_ui.screen_wordcard_label_phonetic,current_word.phonetic);
+                lv_label_set_text(guider_ui.screen_wordcard_label_meaning,current_word.definition);
+                xSemaphoreGive(lvgl_mutex);
+            }
             wordcard_change = 0;
             vTaskDelay(50);
         }else if(reviewcard_change){
             get_word_from_csv(book_info[wordbook_index].review_absoulte_index[review_index], &current_word,book_info[wordbook_index].book_name);
-            lv_label_set_text(guider_ui.screen_reviewcard_label_spelling,current_word.word);
-            lv_obj_set_style_text_font(guider_ui.screen_reviewcard_label_phonetic,&lv_font_arial_14, 0);
-            lv_label_set_text(guider_ui.screen_reviewcard_label_phonetic,current_word.phonetic);
-            lv_label_set_text(guider_ui.screen_reviewcard_label_meaning,current_word.definition);
+            if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(50)) == pdTRUE){
+                lv_label_set_text(guider_ui.screen_reviewcard_label_spelling,current_word.word);
+                lv_obj_set_style_text_font(guider_ui.screen_reviewcard_label_phonetic,&lv_font_arial_14, 0);
+                lv_label_set_text(guider_ui.screen_reviewcard_label_phonetic,current_word.phonetic);
+                lv_label_set_text(guider_ui.screen_reviewcard_label_meaning,current_word.definition);
+                xSemaphoreGive(lvgl_mutex);
+            }
             reviewcard_change = 0;
             vTaskDelay(50);
         }
@@ -127,19 +135,24 @@ void wifi_time_thread(void *arg)
                         timeinfo.tm_hour,
                         timeinfo.tm_min);
                 
-                if((timeinfo.tm_hour >= 19 && timeinfo.tm_hour <= 24) || (timeinfo.tm_hour >= 0 && timeinfo.tm_hour <= 5)){
-                    lv_obj_clear_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
-                }else{
-                    lv_obj_clear_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
+                if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(50)) == pdTRUE){
+                    if((timeinfo.tm_hour >= 19 && timeinfo.tm_hour <= 24) || (timeinfo.tm_hour >= 0 && timeinfo.tm_hour <= 5)){
+                        lv_obj_clear_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
+                        lv_obj_add_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
+                    }else{
+                        lv_obj_clear_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
+                        lv_obj_add_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
+                    }
+                    //show time in lvgl
+                    if(timeinfo.tm_year+1900 >= 2026){
+                        lv_label_set_text(guider_ui.screen_timing_label_date,date_str);
+                        lv_label_set_text(guider_ui.screen_timing_label_realtime,time_str);
+                        lv_label_set_text(guider_ui.screen_timing_label_day,week_days[timeinfo.tm_wday]);
+                    }
+                    xSemaphoreGive(lvgl_mutex);
                 }
-                //show time in lvgl and set time to ds3231
+                //calibration time to ds3231
                 if(timeinfo.tm_year+1900 >= 2026){
-                    lv_label_set_text(guider_ui.screen_timing_label_date,date_str);
-                    lv_label_set_text(guider_ui.screen_timing_label_realtime,time_str);
-                    lv_label_set_text(guider_ui.screen_timing_label_day,week_days[timeinfo.tm_wday]);
-                    //calibration time to ds3231
                     ds3231_time_t set_time = {
                         .second = timeinfo.tm_sec, .minute = timeinfo.tm_min, .hour = timeinfo.tm_hour,
                         .day = timeinfo.tm_wday, .date = timeinfo.tm_mday, .month = timeinfo.tm_mon+1, .year = timeinfo.tm_year
@@ -159,15 +172,18 @@ void wifi_time_thread(void *arg)
                 snprintf(time_str, sizeof(time_str), "%02d:%02d",
                         now.hour,
                         now.minute);
-                lv_label_set_text(guider_ui.screen_timing_label_date,date_str);
-                lv_label_set_text(guider_ui.screen_timing_label_realtime,time_str);
-                lv_label_set_text(guider_ui.screen_timing_label_day,week_days[now.day]); 
-                if((now.hour >= 19 && now.hour <= 24) || (now.hour >= 0 && now.hour <= 5)){
-                    lv_obj_clear_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
-                }else{
-                    lv_obj_clear_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
+                if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(50)) == pdTRUE){
+                    lv_label_set_text(guider_ui.screen_timing_label_date,date_str);
+                    lv_label_set_text(guider_ui.screen_timing_label_realtime,time_str);
+                    lv_label_set_text(guider_ui.screen_timing_label_day,week_days[now.day]); 
+                    if((now.hour >= 19 && now.hour <= 24) || (now.hour >= 0 && now.hour <= 5)){
+                        lv_obj_clear_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
+                        lv_obj_add_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
+                    }else{
+                        lv_obj_clear_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
+                        lv_obj_add_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
+                    }
+                    xSemaphoreGive(lvgl_mutex);
                 }
                 vTaskDelay(990);
             }
@@ -175,28 +191,40 @@ void wifi_time_thread(void *arg)
             //-----------------------scan wifi---------------------//
             wifi_scan_top_5();
             // wifi item btn label modify from wifi scan info
-            for(int i = 0; i < g_scan_ap_num ; i++){
-                lv_obj_t * list_btn = lv_obj_get_child(guider_ui.screen_wificfg_list_1, i);
-                lv_obj_t * label = lv_obj_get_child(list_btn, -1);    
-                if(label != NULL && lv_obj_is_valid(label)) {
-                    lv_label_set_text(label,g_scan_results[i].ssid);
-                }            
+            if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(100)) == pdTRUE){
+                for(int i = 0; i < g_scan_ap_num ; i++){
+                    lv_obj_t * list_btn = lv_obj_get_child(guider_ui.screen_wificfg_list_1, i);
+                    lv_obj_t * label = lv_obj_get_child(list_btn, -1);    
+                    if(label != NULL && lv_obj_is_valid(label)) {
+                        lv_label_set_text(label,g_scan_results[i].ssid);
+                    }            
+                }
+                xSemaphoreGive(lvgl_mutex);
             }
             wifi_scan_en = 0;
         }else if(wifi_connect_en){
             //------------------connect to wifi------------------//
-            char * wifi_password = lv_textarea_get_text(guider_ui.screen_wificfg_ta_password);
-            wifi_connect_to_new_network(wifi_ssid,wifi_password);
+            // Read password under mutex, then connect without holding it
+            char wifi_pw_buf[64] = {0};
+            if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(100)) == pdTRUE){
+                const char * wifi_password = lv_textarea_get_text(guider_ui.screen_wificfg_ta_password);
+                strncpy(wifi_pw_buf, wifi_password, sizeof(wifi_pw_buf)-1);
+                xSemaphoreGive(lvgl_mutex);
+            }
+            wifi_connect_to_new_network(wifi_ssid, wifi_pw_buf);
             vTaskDelay(3000);
             wifi_success = is_wifi_connected();
-            if(wifi_success){
-                wifi_connect_show();
-                if(init_ntp == 0){
-                    initialize_sntp();
-                    init_ntp = 1;
+            if(xSemaphoreTake(lvgl_mutex, portMAX_DELAY) == pdTRUE){
+                if(wifi_success){
+                    wifi_connect_show();
+                    if(init_ntp == 0){
+                        initialize_sntp();
+                        init_ntp = 1;
+                    }
+                }else{
+                    wifi_disconnect_show();
                 }
-            }else{
-                wifi_disconnect_show();
+                xSemaphoreGive(lvgl_mutex);
             }
             wifi_connect_en = 0; 
         }else if(wifi_disconnect_en){
@@ -240,6 +268,8 @@ void app_main(void)
     //wifi sta mode
     init_wifi("dummy","dummy");
     init_ntp = 0;
+    // ------------create LVGL mutex-----------//
+    lvgl_mutex = xSemaphoreCreateMutex();
     // ------------set lvgl by gui guider-----------//
     // LVGL initialize
     lvgl_tick_timer_init(); // init lvgl timer
@@ -249,6 +279,9 @@ void app_main(void)
     setup_ui(&guider_ui);   // connect to gui guider 
     lv_indev_set_group(indev_keypad, g);
 
+    // Create battery timer once — runs every 5s, updates only when on screen_main
+    bat_timer = lv_timer_create(my_battery_update_cb, 5000, NULL);
+
     //-------------multi task thread----------------//
     xTaskCreatePinnedToCore(nvs_thread,"nvs_thread",4096,NULL,10,NULL,0);
     xTaskCreatePinnedToCore(wifi_time_thread,"time_thread",4096,NULL,10,NULL,1);
@@ -257,23 +290,11 @@ void app_main(void)
     while (1) 
     {
         // -----------------LVGL task managing-----------------//
-        lv_task_handler();  // LVGL task managing
-        // -----------------battery timer process--------------//
-        if(lv_scr_act() == guider_ui.screen_main && !screen_main_en){
-            screen_main_en = 1;
-            lv_obj_t * label = guider_ui.screen_main_label_battery;
-            if(lv_obj_is_valid(label) && label != NULL) {
-                int bat = get_battery_percentage();
-                lv_label_set_text_fmt(label, "%d%%", bat);
-            }
-            bat_timer = lv_timer_create(my_battery_update_cb,2000,NULL);
-        }else if(lv_scr_act() != guider_ui.screen_main && screen_main_en){
-            screen_main_en = 0;
-            lv_timer_del(bat_timer);
-            bat_timer = NULL;
+        if(xSemaphoreTake(lvgl_mutex, portMAX_DELAY) == pdTRUE){
+            lv_task_handler();  // LVGL task managing
+            xSemaphoreGive(lvgl_mutex);
         }
-        //-----------------------------------------------------//
-        vTaskDelay(10);
+        vTaskDelay(pdMS_TO_TICKS(5));
     }
     
 }
