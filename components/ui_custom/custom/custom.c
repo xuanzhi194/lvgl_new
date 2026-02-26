@@ -15,7 +15,6 @@
 #include "lvgl.h"
 #include "custom.h"
 #include "widgets_init.h"
-#include "buzzer.h"
 //#include "lv_port_indev.h"
 //lv group define
 lv_group_t *g = NULL;
@@ -85,11 +84,14 @@ wordbook_info_t book_info[3] = {
 //wordcard variables
 bool wordcard_change = 0;
 bool reviewcard_change = 0;
+bool led_green_en = 0;
+bool led_red_en = 0;
 int8_t wordbook_index = 0;
 int review_index = 0;
+/* ========== 用户可改参数 ========== */
+#define DELAY_MS         1500          // 延时多久后切屏
+/* ================================= */
 
-//change screen delay time
-#define DELAY_MS         1500          // stay how long for change screen
 
 static lv_timer_t *delay_timer = NULL;
 
@@ -111,6 +113,7 @@ static void on_screen_loaded(lv_event_t *e)
     delay_timer = lv_timer_create(delay_timer_cb, DELAY_MS, NULL);
     lv_timer_set_repeat_count(delay_timer, 1);          // 只触发一次
 }
+
 
 //reppo delay x ms trans to log screen
 void screen_reppo_custom_init(){
@@ -138,7 +141,6 @@ static void countdown_cb(lv_timer_t *t){
         t = NULL;
         lv_label_set_text(guider_ui.screen_pomodoro_label_timer,"00:00:00");
         countdown_start_label = 0;
-        buzzer_timeout();
         return;
     }
     timer_all_seconds -= 1;
@@ -467,6 +469,7 @@ void screen_wificfg_buttion_add(){
     lv_group_add_obj(g, guider_ui.screen_wificfg_btn_connect); 
     lv_group_add_obj(g, guider_ui.screen_wificfg_btn_back);  
 }
+
 void custom_init(lv_ui *ui)
 {
 

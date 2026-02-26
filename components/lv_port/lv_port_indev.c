@@ -40,10 +40,11 @@
 static void keypad_init(void);
 static void keypad_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
 static uint32_t keypad_get_key(void);
-static uint32_t keypad_get_encoder(void);
+
 // static void encoder_init(void);
 // static void encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
 // static void encoder_handler(void);
+static uint32_t keypad_get_encoder(void);
 
 // static void button_init(void);
 // static void button_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);

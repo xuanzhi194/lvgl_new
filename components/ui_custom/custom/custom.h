@@ -52,6 +52,8 @@ extern int16_t timing_weekday;
 extern wordbook_info_t book_info[3];
 extern bool wordcard_change;
 extern bool reviewcard_change;
+extern bool led_green_en; // Trigger green flow light on btn_dui click
+extern bool led_red_en;   // Trigger red flow light on btn_cuo click
 extern int8_t wordbook_index;
 extern int review_index;
 extern bool keyboard_start_en;

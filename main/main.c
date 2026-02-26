@@ -62,13 +62,19 @@ void nvs_thread(void *param){
             if(ESP_OK  != nvs_commit(nvs_handle)){
                 ESP_LOGI("nvs","!!!!write flash fail!!!");
             }
-            todo_back_label = 0;  
+            todo_back_label = 0;   
         }else if(main_load_label){ //load info from flash to todolist
             nvs_get_i8(nvs_handle,"val",&val);
             size_t len = sizeof(done_array);
             nvs_get_blob(nvs_handle, "done_array", done_array, &len);
             ESP_LOGI("nvs","val = %d\r\n",val);
             main_load_label = 0;
+        }else if(led_green_en){
+            led_green_en = 0;
+            set_flow_light(34, 80, 32);
+        }else if(led_red_en){
+            led_red_en = 0;
+            set_flow_light(80, 32, 33);
         }else if(wordcard_change){
             get_word_from_csv(book_info[wordbook_index].word_index, &current_word,book_info[wordbook_index].book_name);
             lv_label_set_text(guider_ui.screen_wordcard_label_spelling,current_word.word);

@@ -16,6 +16,7 @@
 #endif
 
 #include "custom.h"
+#include "ws2812b.h"
 // int done_array[9][4] = {0};
 // int val = 1;
 // int val_cur = 1;
@@ -1265,6 +1266,8 @@ static void screen_wordcard_btn_dui_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
+        // Trigger green flow light effect
+        led_green_en = 1;
         int word_index_cur = book_info[wordbook_index].word_index;
         if(book_info[wordbook_index].word_state[word_index_cur] == 0) {
             book_info[wordbook_index].word_learned_num += 1;
@@ -1306,6 +1309,8 @@ static void screen_wordcard_btn_cuo_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
+        // Trigger red flow light effect
+        led_red_en = 1;
         int word_index_cur = book_info[wordbook_index].word_index;
         int review_num_cur = book_info[wordbook_index].word_review_num;
 
@@ -1494,6 +1499,8 @@ static void screen_reviewcard_btn_dui_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
+        // Trigger green flow light effect
+        led_green_en = 1;
 
         if(review_index < book_info[wordbook_index].word_review_num - 1) {
             book_info[wordbook_index].word_learned_num += 1;
@@ -1558,6 +1565,8 @@ static void screen_reviewcard_btn_cuo_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
+        // Trigger red flow light effect
+        led_red_en = 1;
         if(review_index < book_info[wordbook_index].word_review_num - 1) {
             book_info[wordbook_index].word_learned_num -= 1;
             review_solve_num -= 1;

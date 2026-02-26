@@ -104,7 +104,7 @@ void setup_scr_screen_pomodoro(lv_ui *ui)
     lv_obj_set_style_radius(ui->screen_pomodoro_label_funcstate, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_pomodoro_label_funcstate, lv_color_hex(0xb586c1), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui->screen_pomodoro_label_funcstate, &lv_font_AdobeFangsongStdRegular_14, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_pomodoro_label_funcstate, 163, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_pomodoro_label_funcstate, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_pomodoro_label_funcstate, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_pomodoro_label_funcstate, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_pomodoro_label_funcstate, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -119,7 +119,7 @@ void setup_scr_screen_pomodoro(lv_ui *ui)
     ui->screen_pomodoro_label_pomodoro = lv_label_create(ui->screen_pomodoro);
     lv_label_set_text(ui->screen_pomodoro_label_pomodoro, "Pomodoro Focus");
     lv_label_set_long_mode(ui->screen_pomodoro_label_pomodoro, LV_LABEL_LONG_WRAP);
-    lv_obj_set_pos(ui->screen_pomodoro_label_pomodoro, 62, 6);
+    lv_obj_set_pos(ui->screen_pomodoro_label_pomodoro, 60, 5);
     lv_obj_set_size(ui->screen_pomodoro_label_pomodoro, 210, 17);
 
     //Write style for screen_pomodoro_label_pomodoro, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -127,7 +127,7 @@ void setup_scr_screen_pomodoro(lv_ui *ui)
     lv_obj_set_style_radius(ui->screen_pomodoro_label_pomodoro, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->screen_pomodoro_label_pomodoro, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui->screen_pomodoro_label_pomodoro, &lv_font_AdobeFangsongStdRegular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_pomodoro_label_pomodoro, 143, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_pomodoro_label_pomodoro, 244, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->screen_pomodoro_label_pomodoro, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->screen_pomodoro_label_pomodoro, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->screen_pomodoro_label_pomodoro, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
