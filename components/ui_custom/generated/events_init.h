@@ -29,6 +29,7 @@ void events_init_screen_wordcard(lv_ui *ui);
 void events_init_screen_reviewcard(lv_ui *ui);
 void events_init_screen_setting(lv_ui *ui);
 void events_init_screen_wificfg(lv_ui *ui);
+void events_init_screen_todosel(lv_ui *ui);
 
 #ifdef __cplusplus
 }

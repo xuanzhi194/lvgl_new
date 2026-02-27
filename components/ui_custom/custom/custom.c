@@ -26,6 +26,7 @@ int8_t done_sum = 0;
 int8_t todo_sum = 0;
 bool todo_back_label = 0;
 bool main_load_label = 0;
+char current_task_name[128] = {0};
 //timer variables
 int16_t timer_all_num = 25; //minutes
 uint32_t timer_all_seconds = 0;
@@ -36,6 +37,7 @@ bool countdown_start_label = 0;
 bool countdown_process_label = 0;
 bool stopwatch_start_label = 0;
 bool stopwatch_process_label = 0;
+bool countdown_timeout_pending = 0;
 //timing variables
 bool task_real_time_en = 0;
 bool timing_back_en = 0;
@@ -51,6 +53,8 @@ bool wifi_connect_en = 0;
 bool wifi_load_en = 0;
 bool wifi_success = 0;
 char *wifi_ssid = NULL;
+//todosel variable
+bool focus_en = 0;
 //wordmenu variables
 wordbook_info_t book_info[3] = {
     [0] = {
@@ -138,9 +142,11 @@ void my_kb_event_cb(lv_event_t * e) {
 static void countdown_cb(lv_timer_t *t){
     if(timer_all_seconds == 0){
         lv_timer_del(t);
-        t = NULL;
+        pomodoro_timer = NULL;
         lv_label_set_text(guider_ui.screen_pomodoro_label_timer,"00:00:00");
+        countdown_timeout_pending = 1;
         countdown_start_label = 0;
+        countdown_process_label = 0;
         return;
     }
     timer_all_seconds -= 1;
@@ -470,6 +476,26 @@ void screen_wificfg_buttion_add(){
     lv_group_add_obj(g, guider_ui.screen_wificfg_btn_back);  
 }
 
+//buttion add function screen_todosel
+void screen_todosel_buttion_add(){
+    if(g == NULL) {
+        g = lv_group_create();
+    } else {
+        lv_group_remove_all_objs(g); 
+    }
+    //setting default group
+    lv_group_set_default(g);
+    //indev with group
+    lv_indev_t * indev = NULL;
+    while ((indev = lv_indev_get_next(indev))) {
+        if (lv_indev_get_type(indev) == LV_INDEV_TYPE_KEYPAD) {
+            lv_indev_set_group(indev, g);
+        }
+    }
+    lv_group_add_obj(g, guider_ui.screen_todosel_btn_complete);  
+    lv_group_add_obj(g, guider_ui.screen_todosel_btn_focus); 
+    lv_group_add_obj(g, guider_ui.screen_todosel_btn_cancel); 
+}
 void custom_init(lv_ui *ui)
 {
 

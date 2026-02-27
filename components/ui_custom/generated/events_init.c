@@ -16,8 +16,6 @@
 #endif
 
 #include "custom.h"
-#include "ws2812b.h"
-// int done_array[9][4] = {0};
 // int val = 1;
 // int val_cur = 1;
 int8_t wordbook_totalnum = 3;
@@ -340,6 +338,12 @@ static void screen_todolist_btn_todo1_event_handler (lv_event_t *e)
         todo_sum = total_todo_num - done_sum;
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_donenum, "%d", done_sum);
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_todonum, "%d", todo_sum);
+        //copy label to todosel menu
+        const char * text_ptr = lv_label_get_text(guider_ui.screen_todolist_label_todo1);
+        // 3. 安全地拷贝到你的变量中 (防止溢出)
+        strncpy(current_task_name, text_ptr, sizeof(current_task_name) - 1);
+        current_task_name[sizeof(current_task_name) - 1] = '\0'; // 确保字符串以 \0 结尾
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_todosel, guider_ui.screen_todosel_del, &guider_ui.screen_todolist_del, setup_scr_screen_todosel, LV_SCR_LOAD_ANIM_FADE_ON, 100, 100, false, false);
         break;
     }
     case LV_EVENT_FOCUSED:
@@ -387,6 +391,12 @@ static void screen_todolist_btn_todo2_event_handler (lv_event_t *e)
         todo_sum = total_todo_num - done_sum;
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_donenum, "%d", done_sum);
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_todonum, "%d", todo_sum);
+        //copy label to todosel menu
+        const char * text_ptr = lv_label_get_text(guider_ui.screen_todolist_label_todo2);
+        // 3. 安全地拷贝到你的变量中 (防止溢出)
+        strncpy(current_task_name, text_ptr, sizeof(current_task_name) - 1);
+        current_task_name[sizeof(current_task_name) - 1] = '\0'; // 确保字符串以 \0 结尾
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_todosel, guider_ui.screen_todosel_del, &guider_ui.screen_todolist_del, setup_scr_screen_todosel, LV_SCR_LOAD_ANIM_FADE_ON, 100, 100, false, false);
         break;
     }
     case LV_EVENT_FOCUSED:
@@ -434,6 +444,12 @@ static void screen_todolist_btn_todo3_event_handler (lv_event_t *e)
         todo_sum = total_todo_num - done_sum;
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_donenum, "%d", done_sum);
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_todonum, "%d", todo_sum);
+        //copy label to todosel menu
+        const char * text_ptr = lv_label_get_text(guider_ui.screen_todolist_label_todo3);
+        // 3. 安全地拷贝到你的变量中 (防止溢出)
+        strncpy(current_task_name, text_ptr, sizeof(current_task_name) - 1);
+        current_task_name[sizeof(current_task_name) - 1] = '\0'; // 确保字符串以 \0 结尾
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_todosel, guider_ui.screen_todosel_del, &guider_ui.screen_todolist_del, setup_scr_screen_todosel, LV_SCR_LOAD_ANIM_FADE_ON, 100, 100, false, false);
         break;
     }
     case LV_EVENT_FOCUSED:
@@ -481,6 +497,12 @@ static void screen_todolist_btn_todo4_event_handler (lv_event_t *e)
         todo_sum = total_todo_num - done_sum;
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_donenum, "%d", done_sum);
         lv_label_set_text_fmt(guider_ui.screen_todolist_label_todonum, "%d", todo_sum);
+        //copy label to todosel menu
+        const char * text_ptr = lv_label_get_text(guider_ui.screen_todolist_label_todo4);
+        // 3. 安全地拷贝到你的变量中 (防止溢出)
+        strncpy(current_task_name, text_ptr, sizeof(current_task_name) - 1);
+        current_task_name[sizeof(current_task_name) - 1] = '\0'; // 确保字符串以 \0 结尾
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_todosel, guider_ui.screen_todosel_del, &guider_ui.screen_todolist_del, setup_scr_screen_todosel, LV_SCR_LOAD_ANIM_FADE_ON, 100, 100, false, false);
         break;
     }
     case LV_EVENT_FOCUSED:
@@ -756,6 +778,12 @@ static void screen_pomodoro_event_handler (lv_event_t *e)
         countdown_process_label = 0;
         stopwatch_start_label = 0;
         stopwatch_process_label = 0;
+        //focus or not juge
+        if(focus_en == 1) {
+            if(guider_ui.screen_pomodoro_label_pomodoro != NULL) {
+                lv_label_set_text(guider_ui.screen_pomodoro_label_pomodoro, current_task_name);
+            }
+        }
         break;
     }
     default:
@@ -1266,7 +1294,6 @@ static void screen_wordcard_btn_dui_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
-        // Trigger green flow light effect
         led_green_en = 1;
         int word_index_cur = book_info[wordbook_index].word_index;
         if(book_info[wordbook_index].word_state[word_index_cur] == 0) {
@@ -1309,7 +1336,6 @@ static void screen_wordcard_btn_cuo_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
-        // Trigger red flow light effect
         led_red_en = 1;
         int word_index_cur = book_info[wordbook_index].word_index;
         int review_num_cur = book_info[wordbook_index].word_review_num;
@@ -1499,9 +1525,7 @@ static void screen_reviewcard_btn_dui_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
-        // Trigger green flow light effect
-        led_green_en = 1;
-
+        led_green_en = 1; // flow light rgb
         if(review_index < book_info[wordbook_index].word_review_num - 1) {
             book_info[wordbook_index].word_learned_num += 1;
             review_solve_num += 1;
@@ -1565,8 +1589,7 @@ static void screen_reviewcard_btn_cuo_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_CLICKED:
     {
-        // Trigger red flow light effect
-        led_red_en = 1;
+        led_red_en = 1; //flow light rgb
         if(review_index < book_info[wordbook_index].word_review_num - 1) {
             book_info[wordbook_index].word_learned_num -= 1;
             review_solve_num -= 1;
@@ -2161,6 +2184,76 @@ void events_init_screen_wificfg (lv_ui *ui)
     lv_obj_add_event_cb(ui->screen_wificfg_btn_cancel, screen_wificfg_btn_cancel_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_wificfg_btn_connect, screen_wificfg_btn_connect_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_wificfg_ta_password, screen_wificfg_ta_password_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void screen_todosel_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_SCREEN_LOAD_START:
+    {
+        //buttion add
+        screen_todosel_buttion_add();
+        //set info to label_task
+        if(guider_ui.screen_todosel_label_task != NULL) {
+            lv_label_set_text(guider_ui.screen_todosel_label_task, current_task_name);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_todosel_btn_complete_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_CLICKED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_todolist, guider_ui.screen_todolist_del, &guider_ui.screen_todosel_del, setup_scr_screen_todolist, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, true, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_todosel_btn_focus_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_CLICKED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_pomodoro, guider_ui.screen_pomodoro_del, &guider_ui.screen_todosel_del, setup_scr_screen_pomodoro, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, true, true);
+        focus_en = 1;
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_todosel_btn_cancel_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_CLICKED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_todolist, guider_ui.screen_todolist_del, &guider_ui.screen_todosel_del, setup_scr_screen_todolist, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, true, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_screen_todosel (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->screen_todosel, screen_todosel_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_todosel_btn_complete, screen_todosel_btn_complete_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_todosel_btn_focus, screen_todosel_btn_focus_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_todosel_btn_cancel, screen_todosel_btn_cancel_event_handler, LV_EVENT_ALL, ui);
 }
 
 

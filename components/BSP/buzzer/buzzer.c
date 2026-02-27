@@ -56,15 +56,12 @@ void buzzer_timeout() {
 
     for (int round = 0; round < 5; round++) {
         for(int i = 0; i < 3; i++) {
-            buzzer_set_sound(alarm_freq, volume);   // 发声
-            vTaskDelay(pdMS_TO_TICKS(100));         // 持续 100ms
-            buzzer_set_sound(alarm_freq, 0);        // 静音 (占空比为0)
-            vTaskDelay(pdMS_TO_TICKS(100));         // 间隔 100ms
+            buzzer_set_sound(alarm_freq, volume);   
+            vTaskDelay(pdMS_TO_TICKS(200));       
+            buzzer_set_sound(alarm_freq, 0);       
+            vTaskDelay(pdMS_TO_TICKS(200));         
         }
-        // 两组声音之间的长停顿
         vTaskDelay(pdMS_TO_TICKS(400)); 
     }
-    
-    // 安全起见，确保函数退出前蜂鸣器被彻底关闭
     buzzer_set_sound(alarm_freq, 0);
 }

@@ -265,6 +265,17 @@ typedef struct
 	lv_obj_t *screen_wificfg_ta_password;
 	lv_obj_t *screen_wificfg_img_passicon;
 	lv_obj_t *screen_wificfg_spinner_connect;
+	lv_obj_t *screen_todosel;
+	bool screen_todosel_del;
+	lv_obj_t *screen_todosel_btn_complete;
+	lv_obj_t *screen_todosel_btn_complete_label;
+	lv_obj_t *screen_todosel_btn_focus;
+	lv_obj_t *screen_todosel_btn_focus_label;
+	lv_obj_t *screen_todosel_btn_cancel;
+	lv_obj_t *screen_todosel_btn_cancel_label;
+	lv_obj_t *screen_todosel_label_task;
+	lv_obj_t *screen_ai;
+	bool screen_ai_del;
 	lv_obj_t *g_kb_top_layer;
 }lv_ui;
 
@@ -300,6 +311,8 @@ void setup_scr_screen_wordcard(lv_ui *ui);
 void setup_scr_screen_reviewcard(lv_ui *ui);
 void setup_scr_screen_setting(lv_ui *ui);
 void setup_scr_screen_wificfg(lv_ui *ui);
+void setup_scr_screen_todosel(lv_ui *ui);
+void setup_scr_screen_ai(lv_ui *ui);
 #include "extra/widgets/animimg/lv_animimg.h"
 LV_IMG_DECLARE(screen_reppo_reppo_gifReppo_label_v3_00);
 LV_IMG_DECLARE(screen_reppo_reppo_gifReppo_label_v3_01);
@@ -445,6 +458,8 @@ LV_IMG_DECLARE(_pomorect_alpha_145x125);
 LV_IMG_DECLARE(_wifi_log_2_alpha_110x110);
 LV_IMG_DECLARE(_wifi_false_alpha_20x20);
 LV_IMG_DECLARE(_password_icon2_alpha_19x18);
+
+LV_IMG_DECLARE(_reppo_todo_sel_320x170);
 
 LV_FONT_DECLARE(lv_font_ArchitectsDaughter_10)
 LV_FONT_DECLARE(lv_font_Alatsi_Regular_12)

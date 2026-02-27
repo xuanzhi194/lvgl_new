@@ -63,6 +63,9 @@ extern bool wifi_connect_en;
 extern bool wifi_load_en;
 extern bool wifi_success;
 extern char *wifi_ssid;
+extern char  current_task_name[128];
+extern bool  focus_en;
+extern bool countdown_timeout_pending;
 // func indicate
 void custom_init(lv_ui *ui);
 void screen_reppo_custom_init();
@@ -82,6 +85,7 @@ void screen_wordmenu_buttion_add();
 void screen_reviewcard_buttion_add();
 void screen_setting_buttion_add();
 void screen_wificfg_buttion_add();
+void screen_todosel_buttion_add();
 void my_kb_event_cb(lv_event_t * e);
 #ifdef __cplusplus
 }

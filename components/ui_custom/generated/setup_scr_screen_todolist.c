@@ -151,7 +151,7 @@ void setup_scr_screen_todolist(lv_ui *ui)
     lv_obj_align(ui->screen_todolist_btn_todo1_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo1, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->screen_todolist_btn_todo1_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_todolist_btn_todo1, 13, 38);
+    lv_obj_set_pos(ui->screen_todolist_btn_todo1, 11, 38);
     lv_obj_set_size(ui->screen_todolist_btn_todo1, 145, 45);
 
     //Write style for screen_todolist_btn_todo1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -186,7 +186,7 @@ void setup_scr_screen_todolist(lv_ui *ui)
     lv_obj_align(ui->screen_todolist_btn_todo2_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo2, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->screen_todolist_btn_todo2_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_todolist_btn_todo2, 168, 37);
+    lv_obj_set_pos(ui->screen_todolist_btn_todo2, 166, 37);
     lv_obj_set_size(ui->screen_todolist_btn_todo2, 144, 45);
 
     //Write style for screen_todolist_btn_todo2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -221,7 +221,7 @@ void setup_scr_screen_todolist(lv_ui *ui)
     lv_obj_align(ui->screen_todolist_btn_todo3_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo3, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->screen_todolist_btn_todo3_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_todolist_btn_todo3, 13, 91);
+    lv_obj_set_pos(ui->screen_todolist_btn_todo3, 11, 91);
     lv_obj_set_size(ui->screen_todolist_btn_todo3, 145, 46);
 
     //Write style for screen_todolist_btn_todo3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -256,7 +256,7 @@ void setup_scr_screen_todolist(lv_ui *ui)
     lv_obj_align(ui->screen_todolist_btn_todo4_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->screen_todolist_btn_todo4, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->screen_todolist_btn_todo4_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_todolist_btn_todo4, 168, 92);
+    lv_obj_set_pos(ui->screen_todolist_btn_todo4, 166, 92);
     lv_obj_set_size(ui->screen_todolist_btn_todo4, 145, 44);
 
     //Write style for screen_todolist_btn_todo4, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.

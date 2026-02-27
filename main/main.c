@@ -39,7 +39,27 @@ lv_ui guider_ui;
 lv_timer_t * bat_timer = NULL;
 SemaphoreHandle_t lvgl_mutex = NULL;  // Protects all LVGL API calls across threads
 bool init_ntp = 0;
+bool buzzer_timeout_task_running = 0;
+bool timeout_alarm_light_running = 0;
 
+// timeout alarm task, including buzzer alarm and flow light alarm
+static void timeout_alarm_light_task(void *param)
+{
+    while(timeout_alarm_light_running){
+        set_flow_light(30, 52, 83);
+    }
+    vTaskDelete(NULL);
+}
+//buzzer timeout alarm task, including buzzer alarm and flow light alarm
+static void buzzer_timeout_task(void *param)
+{
+    timeout_alarm_light_running = 1;
+    xTaskCreatePinnedToCore(timeout_alarm_light_task, "timeout_alarm_light_task", 2048, NULL, 7, NULL, 1);
+    buzzer_timeout();
+    timeout_alarm_light_running = 0;
+    buzzer_timeout_task_running = 0;
+    vTaskDelete(NULL);
+}
 //------------lvgl timer to battery show----------//
 void my_battery_update_cb(lv_timer_t * timer) {
     if (lv_scr_act() != guider_ui.screen_main) return;
@@ -49,7 +69,6 @@ void my_battery_update_cb(lv_timer_t * timer) {
         lv_label_set_text_fmt(label, "%d%%", bat);
     }
 }
-
 //------------nvs flash task thread---------------//
 void nvs_thread(void *param){
     nvs_handle_t nvs_handle;
@@ -104,7 +123,6 @@ void nvs_thread(void *param){
      }
 
 }
-
 //------------Get real time thread---------------//
 void wifi_time_thread(void *arg)
 {
@@ -235,7 +253,6 @@ void wifi_time_thread(void *arg)
         vTaskDelay(10);
     }
 }
-
 //-------------main loop-------------------------//
 void app_main(void)
 {
@@ -289,6 +306,11 @@ void app_main(void)
     //--------------main loop task-----------------//
     while (1) 
     {
+        if(countdown_timeout_pending && !buzzer_timeout_task_running){
+            countdown_timeout_pending = 0;
+            buzzer_timeout_task_running = 1;
+            xTaskCreatePinnedToCore(buzzer_timeout_task, "buzzer_timeout_task", 2048, NULL, 8, NULL, 0);
+        }
         // -----------------LVGL task managing-----------------//
         if(xSemaphoreTake(lvgl_mutex, portMAX_DELAY) == pdTRUE){
             lv_task_handler();  // LVGL task managing
@@ -298,22 +320,5 @@ void app_main(void)
     }
     
 }
-
-
-// void app_main(void) {
-//     init_encoder_direction();
-//     init_led_strip();
-//     buzzer_init();
-//     while (1)
-//     {
-//         set_flow_light(55,10,0);
-//         vTaskDelay(10);
-//         // buzzer_set_sound(2000,50);
-//         // vTaskDelay(1000);
-//         // buzzer_set_sound(2000,0);
-//         // vTaskDelay(1000);
-//     }
-    
-// }
 
  
