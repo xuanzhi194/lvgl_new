@@ -21,6 +21,7 @@
 #include "ds3231.h"
 #include "ws2812b.h"
 #include "ec06.h"
+#include "bsp_ble.h"
 //---------- variables -----------------//
 // const char *wifi_ssid = "wcy";
 // const char *wifi_password = "wcy123456";
@@ -270,15 +271,8 @@ void app_main(void)
     //-----------DS3231 INIT--------------------//
     ds3231_init(I2C_NUM_0, 15, 16); // GPIO 15 (SDA) and GPIO 16 (SCL)
     //--------------NVS init--------------------//
-    //nvs flash init
-    esp_err_t ret;
     //initialize nvs flash
-    ret = nvs_flash_init();
-    if(ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND){
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
+    nvs_flash_init();
     //----------init spiffs for word card-----------//
     init_spiffs();
     //----------wifi cfg init-----------------//

@@ -9,6 +9,7 @@ set(src_dirs
             ds3231
             RGB
             encoder
+            ble
  
 )
  
@@ -23,6 +24,7 @@ set(include_dirs
             ds3231
             RGB
             encoder
+            ble
 )
  
 set(requires
@@ -37,6 +39,7 @@ set(requires
             spiffs
             esp_adc
             led_strip
+            bt
 
 )
  
