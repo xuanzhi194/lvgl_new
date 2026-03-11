@@ -226,7 +226,7 @@ void lcd_init(void)
     lcd_write_cmd(0x29);
     lcd_write_cmd(0x2C);
 
-    lcd_clear(WHITE);
+    lcd_clear(BLACK);
     lcd_on();
 }
 

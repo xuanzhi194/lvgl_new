@@ -183,10 +183,10 @@ void lv_port_indev_init(void)
 static void keypad_init(void)
 {
     /*Your code comes here*/
-    keypad_io_cfg(GPIO_NUM_1);
-    keypad_io_cfg(GPIO_NUM_2);
-    keypad_io_cfg(GPIO_NUM_3);
-    keypad_io_cfg(GPIO_NUM_4);
+    // keypad_io_cfg(GPIO_NUM_1);
+    // keypad_io_cfg(GPIO_NUM_2);
+    // keypad_io_cfg(GPIO_NUM_3);
+    // keypad_io_cfg(GPIO_NUM_4);
     keypad_io_cfg(GPIO_NUM_5);
 
 }

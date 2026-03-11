@@ -474,7 +474,7 @@ void screen_wificfg_buttion_add(){
     lv_group_add_obj(g, guider_ui.screen_wificfg_btn_cancel);  
     lv_group_add_obj(g, guider_ui.screen_wificfg_btn_connect); 
     lv_group_add_obj(g, guider_ui.screen_wificfg_btn_back);  
-}
+} 
 
 //buttion add function screen_todosel
 void screen_todosel_buttion_add(){
