@@ -60,6 +60,8 @@ static void buzzer_timeout_task(void *param)
     timeout_alarm_light_running = 0;
     buzzer_timeout_task_running = 0;
     vTaskDelete(NULL);
+
+    
 }
 //------------lvgl timer to battery show----------//
 void my_battery_update_cb(lv_timer_t * timer) {
