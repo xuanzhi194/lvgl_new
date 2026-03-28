@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -22,11 +23,17 @@
 #include "ws2812b.h"
 #include "ec06.h"
 #include "bsp_ble.h"
-//---------- variables -----------------//
-// const char *wifi_ssid = "wcy";
-// const char *wifi_password = "wcy123456";
-// const char *wifi_ssid = "wphone";
-// const char *wifi_password = "seanhhhh";
+#include "ai_demo_task.h"
+
+#if defined(__has_include)
+#if __has_include("ai_chat_secrets.h")
+#include "ai_chat_secrets.h"
+#endif
+#endif
+
+#ifndef AI_CHAT_API_KEY
+#define AI_CHAT_API_KEY ""
+#endif
 const char *week_days[7] = {
     "Sunday",   // 0
     "Monday",   // 1
@@ -42,7 +49,6 @@ SemaphoreHandle_t lvgl_mutex = NULL;  // Protects all LVGL API calls across thre
 bool init_ntp = 0;
 bool buzzer_timeout_task_running = 0;
 bool timeout_alarm_light_running = 0;
-
 // timeout alarm task, including buzzer alarm and flow light alarm
 static void timeout_alarm_light_task(void *param)
 {
@@ -157,7 +163,7 @@ void wifi_time_thread(void *arg)
                         timeinfo.tm_min);
                 
                 if(xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(50)) == pdTRUE){
-                    if((timeinfo.tm_hour >= 19 && timeinfo.tm_hour <= 24) || (timeinfo.tm_hour >= 0 && timeinfo.tm_hour <= 5)){
+                    if((timeinfo.tm_hour >= 19 && timeinfo.tm_hour <= 24) || (timeinfo.tm_hour <= 5)){
                         lv_obj_clear_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
                         lv_obj_add_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
                     }else{
@@ -197,7 +203,7 @@ void wifi_time_thread(void *arg)
                     lv_label_set_text(guider_ui.screen_timing_label_date,date_str);
                     lv_label_set_text(guider_ui.screen_timing_label_realtime,time_str);
                     lv_label_set_text(guider_ui.screen_timing_label_day,week_days[now.day]); 
-                    if((now.hour >= 19 && now.hour <= 24) || (now.hour >= 0 && now.hour <= 5)){
+                    if((now.hour >= 19 && now.hour <= 24) || (now.hour <= 5)){
                         lv_obj_clear_flag(guider_ui.screen_timing_img_night, LV_OBJ_FLAG_HIDDEN);
                         lv_obj_add_flag(guider_ui.screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
                     }else{
@@ -233,7 +239,7 @@ void wifi_time_thread(void *arg)
                 xSemaphoreGive(lvgl_mutex);
             }
             wifi_connect_to_new_network(wifi_ssid, wifi_pw_buf);
-            vTaskDelay(3000);
+            vTaskDelay(5000);
             wifi_success = is_wifi_connected();
             if(xSemaphoreTake(lvgl_mutex, portMAX_DELAY) == pdTRUE){
                 if(wifi_success){
@@ -279,8 +285,12 @@ void app_main(void)
     init_spiffs();
     //----------wifi cfg init-----------------//
     //wifi sta mode
-    init_wifi("dummy","dummy");
+    init_wifi();
     init_ntp = 0;
+    while(!is_wifi_connected()){
+         wifi_connect_to_new_network("Lin404", "Lyr66668888");
+         vTaskDelay(3000);
+    }
     // ------------create LVGL mutex-----------//
     lvgl_mutex = xSemaphoreCreateMutex();
     // ------------set lvgl by gui guider-----------//
@@ -298,6 +308,9 @@ void app_main(void)
     //-------------multi task thread----------------//
     xTaskCreatePinnedToCore(nvs_thread,"nvs_thread",4096,NULL,10,NULL,0);
     xTaskCreatePinnedToCore(wifi_time_thread,"time_thread",4096,NULL,10,NULL,1);
+
+    //-------------- AI terminal demo task --------------------------//
+    start_ai_demo_task(&init_ntp, AI_CHAT_API_KEY);
 
     //--------------main loop task-----------------//
     while (1) 

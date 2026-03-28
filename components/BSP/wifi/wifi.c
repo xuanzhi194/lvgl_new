@@ -32,8 +32,6 @@ void my_esp_event(void* event_handler_arg, esp_event_base_t event_base, int32_t 
  */
 void init_wifi()
 {
-    // Step 1: Initialize System Components
-    // nvs_flash_init();               // Initialize Non-Volatile Storage (NVS)
     esp_netif_init();               // Initialize the underlying TCP/IP stack
     esp_event_loop_create_default(); // Create the default system event loop
     

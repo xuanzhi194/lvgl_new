@@ -1,9 +1,3 @@
-set(src_dirs 
-            ./
-
- 
-)
- 
 set(include_dirs
                 ./
 
@@ -22,7 +16,7 @@ set(priv_requires
 )
  
 idf_component_register(
-                        SRC_DIRS ${src_dirs}
+                        SRCS "main.c"
                         INCLUDE_DIRS ${include_dirs} 
                         PRIV_REQUIRES ${priv_requires}
                         EMBED_FILES  ${embed_files}

@@ -26,7 +26,6 @@ void setup_scr_screen_ai(lv_ui *ui)
     //Write style for screen_ai, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_bg_opa(ui->screen_ai, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-
     //The custom code of screen_ai.
 
 

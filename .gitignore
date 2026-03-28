@@ -1,3 +1,5 @@
 build/
 sdkconfig
 sdkconfig.old
+main/ai_chat_secrets.h
+components/BSP/ai_chat/ai_chat_secrets.h

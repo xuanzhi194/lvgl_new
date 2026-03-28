@@ -10,6 +10,7 @@ set(src_dirs
             RGB
             encoder
             ble
+            ai_chat
  
 )
  
@@ -25,6 +26,7 @@ set(include_dirs
             RGB
             encoder
             ble
+            ai_chat
 )
  
 set(requires
@@ -40,6 +42,9 @@ set(requires
             esp_adc
             led_strip
             bt
+            esp_http_client
+            json
+            mbedtls
 
 )
  
