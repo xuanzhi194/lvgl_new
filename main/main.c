@@ -24,16 +24,8 @@
 #include "ec06.h"
 #include "bsp_ble.h"
 #include "ai_demo_task.h"
-
-#if defined(__has_include)
-#if __has_include("ai_chat_secrets.h")
 #include "ai_chat_secrets.h"
-#endif
-#endif
 
-#ifndef AI_CHAT_API_KEY
-#define AI_CHAT_API_KEY ""
-#endif
 const char *week_days[7] = {
     "Sunday",   // 0
     "Monday",   // 1
