@@ -1,0 +1,4 @@
+#ifndef AI_CHAT_SECRETS_H
+#define AI_CHAT_SECRETS_H
+#define AI_CHAT_API_KEY "sk-ae876107591d49c1ad8adfe16f2110ef"
+#endif /* AI_CHAT_SECRETS_H */
