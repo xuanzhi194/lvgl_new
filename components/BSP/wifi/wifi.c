@@ -14,7 +14,10 @@ void my_esp_event(void* event_handler_arg, esp_event_base_t event_base, int32_t 
     // 1. Handling WiFi Events
     if (event_base == WIFI_EVENT) {
         if (event_id == WIFI_EVENT_STA_DISCONNECTED) {
+            wifi_event_sta_disconnected_t *disc = (wifi_event_sta_disconnected_t *)event_data;
+            int reason = disc ? disc->reason : -1;
             printf("WiFi Connection Disconnected.\n");
+            ESP_LOGW(TAG, "STA disconnected, reason=%d", reason);
         }
     }
     // 2. Handling IP Events
@@ -60,8 +63,9 @@ void init_wifi()
     esp_wifi_init(&cfg);
     esp_wifi_set_mode(WIFI_MODE_STA);
     
-    wifi_interface_t interface = WIFI_IF_STA;
     esp_wifi_start(); // Start the WiFi driver (Turns on RF hardware)
+    // Disable modem sleep to avoid beacon timeout on weak/interference-prone links.
+    esp_wifi_set_ps(WIFI_PS_NONE);
     printf("WiFi driver started!\n");
 }
 

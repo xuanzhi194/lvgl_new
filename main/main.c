@@ -273,6 +273,9 @@ void app_main(void)
     //--------------NVS init--------------------//
     //initialize nvs flash
     nvs_flash_init();
+    // 加载上次 AI 分析结果（掉电保存），供 UI 显示
+    ai_daily_result_load();
+    ai_weekly_result_load();
     //----------init spiffs for word card-----------//
     init_spiffs();
     //----------wifi cfg init-----------------//
@@ -282,6 +285,7 @@ void app_main(void)
     while(!is_wifi_connected()){
          wifi_connect_to_new_network("Lin404", "Lyr66668888");
          vTaskDelay(3000);
+         wifi_success = is_wifi_connected();
     }
     // ------------create LVGL mutex-----------//
     lvgl_mutex = xSemaphoreCreateMutex();
@@ -302,7 +306,7 @@ void app_main(void)
     xTaskCreatePinnedToCore(wifi_time_thread,"time_thread",4096,NULL,10,NULL,1);
 
     //-------------- AI terminal demo task --------------------------//
-    start_ai_demo_task(&init_ntp, AI_CHAT_API_KEY);
+    start_ai_summary(AI_SUMMARY_WEEKLY, &init_ntp, AI_CHAT_API_KEY);
 
     //--------------main loop task-----------------//
     while (1) 
