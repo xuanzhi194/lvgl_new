@@ -76,7 +76,6 @@ void init_scr_del_flag(lv_ui *ui)
 {
 
     ui->screen_reppo_del = true;
-    ui->screen_log_del = true;
     ui->screen_main_del = true;
     ui->screen_todolist_del = true;
     ui->screen_timing_del = true;

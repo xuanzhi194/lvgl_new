@@ -261,6 +261,7 @@ void setup_scr_screen_timing(lv_ui *ui)
     lv_img_set_angle(ui->screen_timing_img_morning, 0);
     lv_obj_set_pos(ui->screen_timing_img_morning, 286, 57);
     lv_obj_set_size(ui->screen_timing_img_morning, 33, 31);
+    lv_obj_add_flag(ui->screen_timing_img_morning, LV_OBJ_FLAG_HIDDEN);
 
     //Write style for screen_timing_img_morning, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_img_recolor_opa(ui->screen_timing_img_morning, 0, LV_PART_MAIN|LV_STATE_DEFAULT);

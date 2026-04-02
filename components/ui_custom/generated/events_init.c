@@ -41,42 +41,6 @@ void events_init_screen_reppo (lv_ui *ui)
     lv_obj_add_event_cb(ui->screen_reppo, screen_reppo_event_handler, LV_EVENT_ALL, ui);
 }
 
-static void screen_log_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_SCREEN_LOAD_START:
-    {
-        ui_animation(guider_ui.screen_log_reppo_logo, 1000, 500, lv_img_get_zoom(guider_ui.screen_log_reppo_logo), 0, &lv_anim_path_linear, 1, 0, 1000, 0, (lv_anim_exec_xcb_t)lv_img_set_zoom, NULL, NULL, NULL);
-        screen_log_buttion_add();
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-static void screen_log_reppo_logo_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_CLICKED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_main, guider_ui.screen_main_del, &guider_ui.screen_log_del, setup_scr_screen_main, LV_SCR_LOAD_ANIM_FADE_ON, 200, 200, true, true);
-        main_load_label = 1;
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void events_init_screen_log (lv_ui *ui)
-{
-    lv_obj_add_event_cb(ui->screen_log, screen_log_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_log_reppo_logo, screen_log_reppo_logo_event_handler, LV_EVENT_ALL, ui);
-}
-
 static void screen_main_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -1684,72 +1648,6 @@ static void screen_setting_btn_wifi_event_handler (lv_event_t *e)
     }
 }
 
-static void screen_setting_btn_vocab_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_FOCUSED:
-    {
-        lv_label_set_text(guider_ui.screen_setting_label_settings, "Vocab Import");
-        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        lv_obj_clear_flag(guider_ui.screen_setting_img_point2, LV_OBJ_FLAG_HIDDEN);
-        break;
-    }
-    case LV_EVENT_DEFOCUSED:
-    {
-        lv_obj_add_flag(guider_ui.screen_setting_img_point2, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-static void screen_setting_btn_laba_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_FOCUSED:
-    {
-        lv_label_set_text(guider_ui.screen_setting_label_settings, "Volume");
-        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        lv_obj_clear_flag(guider_ui.screen_setting_img_point3, LV_OBJ_FLAG_HIDDEN);
-        break;
-    }
-    case LV_EVENT_DEFOCUSED:
-    {
-        lv_obj_add_flag(guider_ui.screen_setting_img_point3, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-static void screen_setting_btn_timer_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_FOCUSED:
-    {
-        lv_label_set_text(guider_ui.screen_setting_label_settings, "Time Sync");
-        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        lv_obj_clear_flag(guider_ui.screen_setting_img_point4, LV_OBJ_FLAG_HIDDEN);
-        break;
-    }
-    case LV_EVENT_DEFOCUSED:
-    {
-        lv_obj_add_flag(guider_ui.screen_setting_img_point4, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 static void screen_setting_btn_ble_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -1764,6 +1662,77 @@ static void screen_setting_btn_ble_event_handler (lv_event_t *e)
     case LV_EVENT_DEFOCUSED:
     {
         lv_obj_add_flag(guider_ui.screen_setting_img_point5, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_setting_btn_data_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_FOCUSED:
+    {
+        lv_label_set_text(guider_ui.screen_setting_label_settings, "AI Summary");
+        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        lv_obj_clear_flag(guider_ui.screen_setting_img_point7, LV_OBJ_FLAG_HIDDEN);
+        break;
+    }
+    case LV_EVENT_DEFOCUSED:
+    {
+        lv_obj_add_flag(guider_ui.screen_setting_img_point7, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
+        break;
+    }
+    case LV_EVENT_CLICKED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_ai, guider_ui.screen_ai_del, &guider_ui.screen_setting_del, setup_scr_screen_ai, LV_SCR_LOAD_ANIM_FADE_ON, 200, 200, true, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_setting_btn_todo_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_FOCUSED:
+    {
+        lv_label_set_text(guider_ui.screen_setting_label_settings, "Tasks Import");
+        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        lv_obj_clear_flag(guider_ui.screen_setting_img_point8, LV_OBJ_FLAG_HIDDEN);
+        break;
+    }
+    case LV_EVENT_DEFOCUSED:
+    {
+        lv_obj_add_flag(guider_ui.screen_setting_img_point8, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_setting_btn_vocab_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_FOCUSED:
+    {
+        lv_label_set_text(guider_ui.screen_setting_label_settings, "Vocab Import");
+        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        lv_obj_clear_flag(guider_ui.screen_setting_img_point2, LV_OBJ_FLAG_HIDDEN);
+        break;
+    }
+    case LV_EVENT_DEFOCUSED:
+    {
+        lv_obj_add_flag(guider_ui.screen_setting_img_point2, LV_OBJ_FLAG_HIDDEN);
         lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
         break;
     }
@@ -1794,50 +1763,6 @@ static void screen_setting_btn_general_event_handler (lv_event_t *e)
     }
 }
 
-static void screen_setting_btn_data_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_FOCUSED:
-    {
-        lv_label_set_text(guider_ui.screen_setting_label_settings, "Data Analysis");
-        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        lv_obj_clear_flag(guider_ui.screen_setting_img_point7, LV_OBJ_FLAG_HIDDEN);
-        break;
-    }
-    case LV_EVENT_DEFOCUSED:
-    {
-        lv_obj_add_flag(guider_ui.screen_setting_img_point7, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-static void screen_setting_btn_todo_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_FOCUSED:
-    {
-        lv_label_set_text(guider_ui.screen_setting_label_settings, "Tasks Import");
-        ui_animation(guider_ui.screen_setting_label_settings, 0, 0, lv_obj_get_y(guider_ui.screen_setting_label_settings), -25, &lv_anim_path_linear, 1, 0, 200, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        lv_obj_clear_flag(guider_ui.screen_setting_img_point8, LV_OBJ_FLAG_HIDDEN);
-        break;
-    }
-    case LV_EVENT_DEFOCUSED:
-    {
-        lv_obj_add_flag(guider_ui.screen_setting_img_point8, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(guider_ui.screen_setting_label_settings, 8);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 static void screen_setting_btn_back_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -1858,13 +1783,11 @@ void events_init_screen_setting (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->screen_setting, screen_setting_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_setting_btn_wifi, screen_setting_btn_wifi_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_setting_btn_vocab, screen_setting_btn_vocab_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_setting_btn_laba, screen_setting_btn_laba_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_setting_btn_timer, screen_setting_btn_timer_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_setting_btn_ble, screen_setting_btn_ble_event_handler, LV_EVENT_ALL, ui);
-    lv_obj_add_event_cb(ui->screen_setting_btn_general, screen_setting_btn_general_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_setting_btn_data, screen_setting_btn_data_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_setting_btn_todo, screen_setting_btn_todo_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_setting_btn_vocab, screen_setting_btn_vocab_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_setting_btn_general, screen_setting_btn_general_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_setting_btn_back, screen_setting_btn_back_event_handler, LV_EVENT_ALL, ui);
 }
 
@@ -2254,6 +2177,40 @@ void events_init_screen_todosel (lv_ui *ui)
     lv_obj_add_event_cb(ui->screen_todosel_btn_complete, screen_todosel_btn_complete_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_todosel_btn_focus, screen_todosel_btn_focus_event_handler, LV_EVENT_ALL, ui);
     lv_obj_add_event_cb(ui->screen_todosel_btn_cancel, screen_todosel_btn_cancel_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void screen_ai_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_SCREEN_LOAD_START:
+    {
+        screen_ai_buttion_add();
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+static void screen_ai_btn_back_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_CLICKED:
+    {
+        ui_load_scr_animation(&guider_ui, &guider_ui.screen_main, guider_ui.screen_main_del, &guider_ui.screen_ai_del, setup_scr_screen_main, LV_SCR_LOAD_ANIM_FADE_ON, 200, 200, true, true);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_screen_ai (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->screen_ai, screen_ai_event_handler, LV_EVENT_ALL, ui);
+    lv_obj_add_event_cb(ui->screen_ai_btn_back, screen_ai_btn_back_event_handler, LV_EVENT_ALL, ui);
 }
 
 

@@ -99,129 +99,6 @@ void setup_scr_screen_setting(lv_ui *ui)
     lv_obj_set_style_text_font(ui->screen_setting_btn_wifi, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_PRESSED);
     lv_obj_set_style_text_opa(ui->screen_setting_btn_wifi, 255, LV_PART_MAIN|LV_STATE_PRESSED);
 
-    //Write codes screen_setting_btn_vocab
-    ui->screen_setting_btn_vocab = lv_btn_create(ui->screen_setting_cont_menu);
-    ui->screen_setting_btn_vocab_label = lv_label_create(ui->screen_setting_btn_vocab);
-    lv_label_set_text(ui->screen_setting_btn_vocab_label, "");
-    lv_label_set_long_mode(ui->screen_setting_btn_vocab_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_setting_btn_vocab_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_setting_btn_vocab, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_setting_btn_vocab_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_setting_btn_vocab, 172, 42);
-    lv_obj_set_size(ui->screen_setting_btn_vocab, 65, 65);
-
-    //Write style for screen_setting_btn_vocab, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_setting_btn_vocab, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_vocab, &_vocab_icon_65x65, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_vocab, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_vocab, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_setting_btn_vocab, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
-
-    //Write style for screen_setting_btn_vocab, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_radius(ui->screen_setting_btn_vocab, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_vocab, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_color(ui->screen_setting_btn_vocab, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_spread(ui->screen_setting_btn_vocab, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_x(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_y(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_vocab, &_vocab_icon_65x65, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_vocab, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_vocab, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-
-    //Write codes screen_setting_btn_laba
-    ui->screen_setting_btn_laba = lv_btn_create(ui->screen_setting_cont_menu);
-    ui->screen_setting_btn_laba_label = lv_label_create(ui->screen_setting_btn_laba);
-    lv_label_set_text(ui->screen_setting_btn_laba_label, "");
-    lv_label_set_long_mode(ui->screen_setting_btn_laba_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_setting_btn_laba_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_setting_btn_laba, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_setting_btn_laba_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_setting_btn_laba, 111, 44);
-    lv_obj_set_size(ui->screen_setting_btn_laba, 65, 65);
-
-    //Write style for screen_setting_btn_laba, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_setting_btn_laba, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_laba, &_laba_icon_65x65, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_laba, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_laba, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_laba, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_laba, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_setting_btn_laba, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
-
-    //Write style for screen_setting_btn_laba, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_radius(ui->screen_setting_btn_laba, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_laba, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_color(ui->screen_setting_btn_laba, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_opa(ui->screen_setting_btn_laba, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_spread(ui->screen_setting_btn_laba, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_x(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_y(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_laba, &_laba_icon_65x65, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_laba, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_laba, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_laba, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_laba, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_laba, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-
-    //Write codes screen_setting_btn_timer
-    ui->screen_setting_btn_timer = lv_btn_create(ui->screen_setting_cont_menu);
-    ui->screen_setting_btn_timer_label = lv_label_create(ui->screen_setting_btn_timer);
-    lv_label_set_text(ui->screen_setting_btn_timer_label, "");
-    lv_label_set_long_mode(ui->screen_setting_btn_timer_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_setting_btn_timer_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_setting_btn_timer, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_setting_btn_timer_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_setting_btn_timer, 197, 41);
-    lv_obj_set_size(ui->screen_setting_btn_timer, 65, 65);
-
-    //Write style for screen_setting_btn_timer, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_setting_btn_timer, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_timer, &_timer_icon_65x65, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_timer, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_timer, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_timer, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_timer, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_setting_btn_timer, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
-
-    //Write style for screen_setting_btn_timer, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_radius(ui->screen_setting_btn_timer, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_timer, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_color(ui->screen_setting_btn_timer, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_opa(ui->screen_setting_btn_timer, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_spread(ui->screen_setting_btn_timer, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_x(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_y(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_timer, &_timer_icon_65x65, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_timer, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_timer, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_timer, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_timer, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_timer, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-
     //Write codes screen_setting_btn_ble
     ui->screen_setting_btn_ble = lv_btn_create(ui->screen_setting_cont_menu);
     ui->screen_setting_btn_ble_label = lv_label_create(ui->screen_setting_btn_ble);
@@ -262,47 +139,6 @@ void setup_scr_screen_setting(lv_ui *ui)
     lv_obj_set_style_text_color(ui->screen_setting_btn_ble, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
     lv_obj_set_style_text_font(ui->screen_setting_btn_ble, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
     lv_obj_set_style_text_opa(ui->screen_setting_btn_ble, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-
-    //Write codes screen_setting_btn_general
-    ui->screen_setting_btn_general = lv_btn_create(ui->screen_setting_cont_menu);
-    ui->screen_setting_btn_general_label = lv_label_create(ui->screen_setting_btn_general);
-    lv_label_set_text(ui->screen_setting_btn_general_label, "");
-    lv_label_set_long_mode(ui->screen_setting_btn_general_label, LV_LABEL_LONG_WRAP);
-    lv_obj_align(ui->screen_setting_btn_general_label, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_pad_all(ui->screen_setting_btn_general, 0, LV_STATE_DEFAULT);
-    lv_obj_set_width(ui->screen_setting_btn_general_label, LV_PCT(100));
-    lv_obj_set_pos(ui->screen_setting_btn_general, 9, 43);
-    lv_obj_set_size(ui->screen_setting_btn_general, 65, 65);
-
-    //Write style for screen_setting_btn_general, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui->screen_setting_btn_general, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_general, &_general_icon_65x65, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_general, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_general, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->screen_setting_btn_general, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
-
-    //Write style for screen_setting_btn_general, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
-    lv_obj_set_style_bg_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_border_width(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_radius(ui->screen_setting_btn_general, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_width(ui->screen_setting_btn_general, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_color(ui->screen_setting_btn_general, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_spread(ui->screen_setting_btn_general, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_x(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_shadow_ofs_y(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_general, &_general_icon_65x65, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_color(ui->screen_setting_btn_general, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_font(ui->screen_setting_btn_general, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
-    lv_obj_set_style_text_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
 
     //Write codes screen_setting_btn_data
     ui->screen_setting_btn_data = lv_btn_create(ui->screen_setting_cont_menu);
@@ -385,6 +221,88 @@ void setup_scr_screen_setting(lv_ui *ui)
     lv_obj_set_style_text_color(ui->screen_setting_btn_todo, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
     lv_obj_set_style_text_font(ui->screen_setting_btn_todo, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
     lv_obj_set_style_text_opa(ui->screen_setting_btn_todo, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_setting_btn_vocab
+    ui->screen_setting_btn_vocab = lv_btn_create(ui->screen_setting_cont_menu);
+    ui->screen_setting_btn_vocab_label = lv_label_create(ui->screen_setting_btn_vocab);
+    lv_label_set_text(ui->screen_setting_btn_vocab_label, "");
+    lv_label_set_long_mode(ui->screen_setting_btn_vocab_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_setting_btn_vocab_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_setting_btn_vocab, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_setting_btn_vocab_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_setting_btn_vocab, 172, 42);
+    lv_obj_set_size(ui->screen_setting_btn_vocab, 65, 65);
+
+    //Write style for screen_setting_btn_vocab, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_setting_btn_vocab, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_vocab, &_vocab_icon_65x65, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_setting_btn_vocab, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_setting_btn_vocab, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_setting_btn_vocab, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_setting_btn_vocab, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_setting_btn_vocab, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_setting_btn_vocab, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_setting_btn_vocab, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_setting_btn_vocab, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_vocab, &_vocab_icon_65x65, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_vocab, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_setting_btn_vocab, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_setting_btn_vocab, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_setting_btn_vocab, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+
+    //Write codes screen_setting_btn_general
+    ui->screen_setting_btn_general = lv_btn_create(ui->screen_setting_cont_menu);
+    ui->screen_setting_btn_general_label = lv_label_create(ui->screen_setting_btn_general);
+    lv_label_set_text(ui->screen_setting_btn_general_label, "");
+    lv_label_set_long_mode(ui->screen_setting_btn_general_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->screen_setting_btn_general_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->screen_setting_btn_general, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->screen_setting_btn_general_label, LV_PCT(100));
+    lv_obj_set_pos(ui->screen_setting_btn_general, 9, 43);
+    lv_obj_set_size(ui->screen_setting_btn_general, 65, 65);
+
+    //Write style for screen_setting_btn_general, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->screen_setting_btn_general, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_general, &_general_icon_65x65, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->screen_setting_btn_general, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->screen_setting_btn_general, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->screen_setting_btn_general, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write style for screen_setting_btn_general, Part: LV_PART_MAIN, State: LV_STATE_FOCUSED.
+    lv_obj_set_style_bg_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_border_width(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(ui->screen_setting_btn_general, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_width(ui->screen_setting_btn_general, 5, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_color(ui->screen_setting_btn_general, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_spread(ui->screen_setting_btn_general, 1, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_x(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_shadow_ofs_y(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_src(ui->screen_setting_btn_general, &_general_icon_65x65, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_img_recolor_opa(ui->screen_setting_btn_general, 0, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_color(ui->screen_setting_btn_general, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_font(ui->screen_setting_btn_general, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_FOCUSED);
+    lv_obj_set_style_text_opa(ui->screen_setting_btn_general, 255, LV_PART_MAIN|LV_STATE_FOCUSED);
 
     //Write codes screen_setting_label_settings
     ui->screen_setting_label_settings = lv_label_create(ui->screen_setting);

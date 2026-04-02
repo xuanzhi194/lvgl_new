@@ -86,6 +86,7 @@ void screen_reviewcard_buttion_add();
 void screen_setting_buttion_add();
 void screen_wificfg_buttion_add();
 void screen_todosel_buttion_add();
+void screen_ai_buttion_add();
 void my_kb_event_cb(lv_event_t * e);
 #ifdef __cplusplus
 }

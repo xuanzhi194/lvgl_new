@@ -306,7 +306,7 @@ void app_main(void)
     xTaskCreatePinnedToCore(wifi_time_thread,"time_thread",4096,NULL,10,NULL,1);
 
     //-------------- AI terminal demo task --------------------------//
-    start_ai_summary(AI_SUMMARY_WEEKLY, &init_ntp, AI_CHAT_API_KEY);
+    // start_ai_summary(AI_SUMMARY_WEEKLY, &init_ntp, AI_CHAT_API_KEY);
 
     //--------------main loop task-----------------//
     while (1) 
